@@ -1,0 +1,9 @@
+<%= button_to bucket_views_path(bucket), class: "btn", style: "font-size: 0.4em;" do %>
+  <%= hidden_field_tag :order_by, params[:order_by], name: "view[order_by]" %>
+  <%= hidden_field_tag :status, params[:status], name: "view[status]" %>
+  <%= hidden_field_tag :assignee_ids, Array(params[:assignee_ids]).join(","), name: "view[assignee_ids]" %>
+  <%= hidden_field_tag :tag_ids, Array(params[:tag_ids]).join(","), name: "view[tag_ids]" %>
+
+  <%= image_tag "add.svg", aria: { hidden: true }, size: 24 %>
+  <span class="for-screen-reader">Save filters</span>
+<% end %>

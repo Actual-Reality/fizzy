@@ -1,0 +1,18 @@
+<div class="filter align-center gap-half" data-controller="dialog" data-action="keydown.esc->dialog#close click@document->dialog#closeOnClickOutside">
+  <button class="btn btn--plain filter__button" data-action="click->dialog#toggle" data-dialog-modal-value="true">
+    <%= bucket.name %>
+  </button>
+
+  <dialog class="filter__popup panel fill-white shadow" data-dialog-target="dialog">
+    <menu class="filter__menu unpad margin-none">
+      <% Current.user.buckets.order(:name).each do |bucket| %>
+        <li><%= link_to bucket.name, bucket_bubbles_path(bucket, bubble_filter_params), class: "filter__button" %></li>
+      <% end %>
+    </menu>
+  </dialog>
+
+  <%= link_to edit_bucket_url(bucket), class: "btn btn--plain", style: "font-size: 0.25em;" do %>
+    <%= image_tag "pencil.svg", aria: { hidden: true }, size: 24 %>
+    <span class="for-screen-reader">Edit</span>
+  <% end %>
+</div>
