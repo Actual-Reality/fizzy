@@ -20,8 +20,6 @@
 .comment__avatar {
   margin-block-start: calc(var(--comment-padding-block) * 0.5);
   margin-inline: auto calc(var(--comment-padding-inline) * -0.75);
-  position: relative;
-  z-index: 1;
 
   .comment--mine & {
     margin-inline: calc(var(--comment-padding-inline) * -0.75) auto;

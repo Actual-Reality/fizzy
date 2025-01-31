@@ -6,7 +6,6 @@
   inset: auto var(--inline-space) var(--block-space-half) auto;
   padding: var(--block-space-half) var(--inline-space);
   position: fixed;
-  z-index: 1;
 
   .notification {
     --outline-color: var(--color-link);
