@@ -18,4 +18,13 @@ class NotifierTest < ActiveSupport::TestCase
       Notifier.for(events(:logo_published)).generate
     end
   end
+
+  test "generate does not create notifications if the event was system-generated" do
+    bubbles(:logo).drafted!
+    events(:logo_published).update!(creator: accounts("37s").users.system)
+
+    assert_no_difference -> { Notification.count } do
+      Notifier.for(events(:logo_published)).generate
+    end
+  end
 end
