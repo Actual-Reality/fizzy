@@ -32,7 +32,7 @@ module NotificationsHelper
   end
 
   def notification_mark_read_button(notification)
-    button_to mark_read_notification_path(notification),
+    button_to read_notification_path(notification),
       class: "notification__unread_indicator btn borderless",
       title: "Mark as read",
       data: { turbo_frame: "_top" } do

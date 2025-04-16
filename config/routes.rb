@@ -46,17 +46,13 @@ Rails.application.routes.draw do
   end
 
 
-  resources :notifications, only: :index
-  namespace :notifications do
-    resource :tray, only: :show
-    resource :mark_all_read, only: :create
-    resources :mark_read, only: :create
-    resource :settings, only: :show
-  end
-
   resources :notifications do
-    member do
-      post :mark_read
+    scope module: :notifications do
+      get "tray",     to: "trays#show", on: :collection
+      get "settings", to: "settings#show", on: :collection
+
+      post "readings", to: "readings#create_all", on: :collection, as: :read_all
+      post "reading",  to: "readings#create",     on: :member,     as: :read
     end
   end
 

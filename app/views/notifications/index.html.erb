@@ -1,4 +1,5 @@
 <% @page_title = "Notifications" %>
+<% @hide_footer_frames = true %>
 
 <% content_for :header do %>
   <nav class="align-start">
@@ -6,37 +7,35 @@
 
     <h1 class="txt-x-large"><%= @page_title %></h1>
 
-    <%= link_to notifications_settings_path, class: "btn flex-item-justify-end" do %>
-      <%= icon_tag "settings" %>
-      <span class="for-screen-reader">Notification settings</span>
+    <%= link_to settings_notifications_path, class: "btn flex-item-justify-end" do %>
+      <%= icon_tag "settings" %> <span class="for-screen-reader">Notification settings</span>
     <% end %>
   </nav>
 <% end %>
 
 <section class="panel center borderless unpad flex flex-column gap-half">
-  <%= turbo_frame_tag "notifications_list" do %>
-    <% if @unread.any? %>
-      <div class="flex align-center justify-space-between margin-block-start margin-block-end-half">
-        <h2 class="txt-medium txt-uppercase txt-alert">New for you</h2>
-        <%= button_to notifications_mark_all_read_path, class: "btn txt-small" do %>
-          Mark all as read
-        <% end %>
-      </div>
+  <% if @unread.any? %>
+    <div class="flex align-center justify-space-between margin-block-start margin-block-end-half">
+      <h2 class="txt-medium txt-uppercase txt-alert">New for you</h2>
+      <%= button_to "Mark all as read", read_all_notifications_path, class: "btn txt-small" %>
+    </div>
 
-      <%= render @unread %>
-    <% else %>
-      <div class="pad border-radius border translucent" style="--border-style: dashed; --border-color: var(--color-ink); --border-radius: 0.2em;">
-        <strong>Nothing new for you.</strong>
-      </div>
-    <% end %>
+    <%= render partial: "notifications/notification", collection: @unread, cached: true %>
+  <% else %>
+    <%# FIXME: Need to reveal this section if there are unread notification records in it %>
+    <div class="pad border-radius border translucent" style="--border-style: dashed; --border-color: var(--color-ink); --border-radius: 0.2em;">
+      <strong>Nothing new for you.</strong>
+    </div>
   <% end %>
 </section>
 
-<% if @page.records.any? %>
-  <section id="notifications_list_read" class="notificiations-list--read panel center borderless unpad flex flex-column gap-half margin-block-start">
-    <h2 class="txt-medium margin-block-start-double margin-block-end-half txt-uppercase translucent">Previously seen</h2>
-    <%= render @page.records %>
-  </section>
+<%# FIXME: Need to hide this section if there are no notification records in it, but then it needs to appear when any are added %>
+<section class="notificiations-list--read panel center borderless unpad flex flex-column gap-half margin-block-start">
+  <h2 class="txt-medium margin-block-start-double margin-block-end-half txt-uppercase translucent">Previously seen</h2>
 
-  <%= notifications_next_page_link(@page) %>
-<% end %>
+  <div id="notifications_list_read">
+    <%= render partial: "notifications/notification", collection: @page.records, cached: true %>
+  </div>
+</section>
+
+<%= notifications_next_page_link(@page) if @page.records.any? %>

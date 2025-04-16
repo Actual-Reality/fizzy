@@ -1,14 +1,11 @@
 <%= turbo_stream_from Current.user, :notifications %>
 
-<%= tag.dialog id: "notification-tray", class: "tray notification-tray",
-      data: { controller: "dialog", 
-              turbo_permanent: true, 
-              dialog_modal_value: false, 
-              dialog_target: "dialog", 
-              action: "keydown.esc->dialog#close:stop click@document->dialog#closeOnClickOutside" } do %>
-  <%= turbo_frame_tag("notifications", src: notifications_tray_path) -%>
+<dialog class="tray notification-tray"
+    data-controller="dialog" data-dialog-modal-value="false" data-dialog-target="dialog"
+    data-action="keydown.esc->dialog#close:stop click@document->dialog#closeOnClickOutside">
+  <%= turbo_frame_tag "notifications", src: tray_notifications_path %>
 
-  <%= link_to notifications_path, class: "tray__overflow border-radius txt-normal", data: { action: "click->dialog#close"} do %>
+  <%= link_to notifications_path, class: "tray__overflow border-radius txt-normal", data: { action: "click->dialog#close" } do %>
     <div class="notification__content border-radius shadow fill-white flex align-center txt-align-center gap full-width border txt-ink txt-small">
       <div class="flex flex-column txt-tight-lines min-width flex-item-grow">
         <strong>+ More…</strong>
@@ -17,22 +14,18 @@
   <% end %>
 
   <div class="tray__actions notification-tray__actions border border-radius">
-    <%= button_to notifications_mark_all_read_path, 
-        class: "notification-tray__read_action btn btn--reversed fill-transparent borderless flex-item-justify-start shadow txt-xx-small", 
-        data: { action: "click->dialog#close", turbo_frame: "notifications" } do %>
-      <%= icon_tag "check" %>
-      <span class="for-screen-reader">Mark all read</span>
+    <%= button_to read_all_notifications_path,
+          class: "notification-tray__read_action btn btn--reversed fill-transparent borderless flex-item-justify-start shadow txt-xx-small",
+          data: { action: "click->dialog#close", turbo_frame: "notifications" } do %>
+      <%= icon_tag "check" %> <span class="for-screen-reader">Mark all read</span>
     <% end %>
 
-    <%= link_to notifications_path, 
-          class: "btn btn--reversed borderless fill-transparent translucent shadow center txt-uppercase txt-x-small", 
-          data: { action: "click->dialog#close"} do %>
-      <span>Notifications</span>
-    <% end %>
+    <%= link_to tag.span("Notifications"), notifications_path,
+          class: "btn btn--reversed borderless fill-transparent translucent shadow center txt-uppercase txt-x-small",
+          data: { action: "click->dialog#close" } %>
 
     <span class="btn btn--placeholder txt-xx-small borderless"></span>
   </div>
 
-  <button class="tray__expander" data-action="dialog#toggle" aria-label="Expand notifications stack">
-  </button>
-<% end %>
+  <button class="tray__expander" data-action="dialog#toggle" aria-label="Expand notifications stack"></button>
+</dialog>

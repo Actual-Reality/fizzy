@@ -46,10 +46,12 @@
     <footer id="footer">
       <%= yield :footer %>
 
-      <% if Current.user %>
-        <%= render "notifications/tray" %>
-        <%= render "my/pins/tray" %>
-        <%= turbo_frame_tag "terminal", src: terminal_path, data: { turbo_permanent: true } %>
+      <% if Current.user && !@hide_footer_frames %>
+        <div id="footer_frames" data-turbo-permanent="true">
+          <%= render "notifications/tray" %>
+          <%= render "my/pins/tray" %>
+          <%= turbo_frame_tag "terminal", src: terminal_path %>
+        </div>
       <% end %>
     </footer>
 
