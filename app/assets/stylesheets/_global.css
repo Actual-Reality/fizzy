@@ -31,6 +31,7 @@
   /* Components */
   --btn-size: 2.65em;
   --footer-height: 3.5rem;
+  --tray-size: clamp(14rem, 25dvw, 24rem);
 
   /* Z-index */
   --z-events-column-header: 1;
