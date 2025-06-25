@@ -1,0 +1,38 @@
+<% @page_title = "Search" %>
+
+<% content_for :header do %>
+  <nav>
+    <%= link_to_back fallback_path: root_path %>
+
+    <header class="center">
+      <h1 class="txt-large margin-none"><%= @page_title %></h1>
+    </header>
+
+    <div class="btn btn--placeholder flex-item-justify-end"></div>
+  </nav>
+<% end %>
+
+<%= auto_submit_form_with url: searches_queries_path(q: @query_terms), method: :post %>
+
+<section class="search">
+  <%= render "searches/form", query_terms: @query_terms %>
+
+  <div class="search__results">
+    <% if @query_terms.present? && @search_results.none? %>
+      <div class="search__empty">
+        No search results
+      </div>
+    <% end %>
+
+    <ul class="search__list">
+      <%= render partial: "searches/result", collection: @search_results %>
+    </ul>
+  </div>
+
+  <aside class="search__history">
+    <h3>Your recent searches…</h3>
+    <ul class="search__list">
+      <%= render partial: "searches/search_query", collection: @recent_search_queries.first(10) %>
+    </ul>
+  </aside>
+</section>

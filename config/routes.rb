@@ -61,6 +61,11 @@ Rails.application.routes.draw do
     end
   end
 
+  resource :search
+  namespace :searches do
+    resources :queries
+  end
+
   resources :filters
 
   resources :events, only: :index

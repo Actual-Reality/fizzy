@@ -3,6 +3,10 @@ module FormsHelper
     data = attributes.delete(:data) || {}
     data[:controller] = "auto-submit #{data[:controller]}".strip
 
-    form_with **attributes, data: data, &
+    if block_given?
+      form_with **attributes, data: data, &
+    else
+      form_with(**attributes, data: data) { }
+    end
   end
 end

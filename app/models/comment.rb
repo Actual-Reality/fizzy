@@ -6,7 +6,7 @@ class Comment < ApplicationRecord
   has_many :reactions, dependent: :delete_all
 
   has_rich_text :body
-  searchable_by :body_plain_text, using: :comments_search_index, as: :body
+  searchable_by :body, using: :comments_search_index
 
   scope :chronologically, -> { order created_at: :asc, id: :desc }
 
@@ -19,10 +19,6 @@ class Comment < ApplicationRecord
   end
 
   private
-    def body_plain_text
-      body.to_plain_text
-    end
-
     def watch_card_by_creator
       card.watch_by creator
     end

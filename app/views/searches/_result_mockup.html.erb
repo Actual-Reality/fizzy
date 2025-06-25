@@ -1,0 +1,19 @@
+<div class="card card--search">
+  <header class="card__header">
+    <label class="card__collection flex align-center">
+      <span class="card__id">864</span>
+      <span class="card__collection-name">
+        <span class="overflow-ellipsis"><%= collection %></span>
+      </span>
+    </label>
+  </header>
+
+  <div class="card__body justify-space-between">
+    <div class="card__content">
+      <h3 class="card__title">
+        <%= title.html_safe %>
+      </h3>
+      <%= yield %>
+    </div>
+  </div>
+</div>

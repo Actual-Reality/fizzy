@@ -67,6 +67,7 @@
   .icon--remove-med { --svg: url("remove-med.svg "); }
   .icon--remove { --svg: url("remove.svg "); }
   .icon--rename { --svg: url("rename.svg "); }
+  .icon--search { --svg: url("search.svg "); }
   .icon--settings { --svg: url("settings.svg "); }
   .icon--share { --svg: url("share.svg "); }
   .icon--tag { --svg: url("tag.svg "); }
