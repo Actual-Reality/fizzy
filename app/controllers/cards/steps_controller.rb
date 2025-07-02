@@ -30,6 +30,6 @@ class Cards::StepsController < ApplicationController
     end
 
     def step_params
-      params.require(:step).permit(:content, :completed)
+      params.expect(step: [ :content, :completed ])
     end
 end
