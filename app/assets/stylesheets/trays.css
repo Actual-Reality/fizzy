@@ -141,6 +141,14 @@
 
     position: relative;
 
+    &[aria-selected]{
+      .card {
+        border-radius: 0.25ch;
+        outline: var(--focus-ring-size) solid var(--focus-ring-color);
+        outline-offset: var(--focus-ring-offset);
+      }
+    }
+
     .tray__dialog & {
       font-size: 10px;
       margin-block-end: var(--tray-item-margin);
