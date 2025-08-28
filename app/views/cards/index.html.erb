@@ -11,7 +11,11 @@
 <% content_for :header do %>
   <%= render "filters/menu", user_filtering: @user_filtering %>
 
-  <div class="header__actions header__actions--start"></div>
+  <div class="header__actions header__actions--start">
+    <% if collection = @filter.single_collection %>
+      <%= access_involvement_advance_button collection, Current.user %>
+    <% end %>
+  </div>
 
   <h1 class="header__title overflow-ellipsis" style="view-transistion-name: card-collection-title">
     <%= @user_filtering.selected_collections_label %>
