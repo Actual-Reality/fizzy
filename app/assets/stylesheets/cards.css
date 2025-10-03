@@ -327,6 +327,10 @@
   .card-perma:has(.card__closed),
   .card-perma:has(.card--postponed) {
     --card-color: var(--color-card-complete) !important;
+
+    .bubble {
+      display: none;
+    }
   }
 
   .card__closed-title {
