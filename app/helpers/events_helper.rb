@@ -103,7 +103,7 @@ module EventsHelper
         "#{event_creator_name(event)} moved #{event_card_title(card)} to '#{h event.particulars.dig('particulars', 'column')}'"
       when "card_sent_back_to_triage"
         "#{event_creator_name(event)} moved #{event_card_title(card)} back to the stream"
-    end.html_safe
+    end&.html_safe
     end
 
     def event_card_title(card)
