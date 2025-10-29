@@ -95,21 +95,13 @@ This environment uses local disk for Active Storage.
 
 Staging is primarily intended for testing infrastructure changes.
 
-Production tenants are:
-
-- https://37s.fizzy.37signals-staging.com/
-- https://dev.fizzy.37signals-staging.com/
-- https://qa.fizzy.37signals-staging.com/
+- https://fizzy.37signals-staging.com/
 
 This environment uses a FlashBlade bucket for blob storage, and shares nothing with Production. We may periodically copy data here from production.
 
 
 ### Production
 
-Production tenants are:
-
-- https://37s.box-car.com/
-- https://dev.box-car.com/
-- https://qa.box-car.com/
+- https://box-car.com/
 
 This environment uses a FlashBlade bucket for blob storage.
