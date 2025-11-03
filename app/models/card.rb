@@ -52,6 +52,10 @@ class Card < ApplicationRecord
     end
   end
 
+  def filled?
+    title.present? || description.present?
+  end
+
   private
     def set_default_title
       self.title = "Untitled" if title.blank?
