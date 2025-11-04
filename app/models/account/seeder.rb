@@ -82,6 +82,8 @@ class Account::Seeder
           <li>Then, hit "Mark as Done" at the bottom of the card.</li>
           <li>Finally, hit “<b><strong>←Playground</strong></b>” in the top left of the screen to go back to the board.</li>
         </ol>
+        <p><br></p>
+        <action-text-attachment url="https://videos.37signals.com/fizzy/assets/images/rename.gif" alt="Demo of renaming a card" caption="Rename this card" content-type="image/*" filename="rename.gif" presentation="gallery"></action-text-attachment>
       HTML
     end
 
