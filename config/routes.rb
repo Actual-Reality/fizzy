@@ -91,6 +91,7 @@ Rails.application.routes.draw do
   # Support for legacy URLs
   get "/collections/:collection_id/cards/:id", to: redirect { |params, request| "#{request.script_name}/cards/#{params[:id]}" }
   get "/collections/:id", to: redirect { |params, request| "#{request.script_name}/boards/#{params[:id]}" }
+  get "/public/collections/:id", to: redirect { |params, request| "#{request.script_name}/public/boards/#{params[:id]}" }
 
   namespace :notifications do
     resource :settings
