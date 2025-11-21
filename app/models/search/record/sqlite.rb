@@ -2,21 +2,17 @@ module Search::Record::SQLite
   extend ActiveSupport::Concern
 
   included do
-    # Override the UUID id attribute from ApplicationRecord
-    # FTS tables require integer rowids
+    # Override default UUID id attribute, as FTS5 uses rowid integer primary key
     attribute :id, :integer, default: nil
-
-    # Virtual attributes from FTS5 functions
     attribute :result_title, :string
     attribute :result_content, :string
+
+    has_one :search_records_fts, -> { with_rowid }, class_name: "Search::Record::SQLite::Fts", foreign_key: :rowid, primary_key: :id
 
     after_save :upsert_to_fts5_table
     after_destroy :delete_from_fts5_table
 
-    scope :matching, ->(query, account_id) do
-      joins("INNER JOIN search_records_fts ON search_records_fts.rowid = #{table_name}.id")
-        .where("search_records_fts MATCH ?", query)
-    end
+    scope :matching, ->(query, account_id) { joins(:search_records_fts).where("search_records_fts MATCH ?", query) }
   end
 
   class_methods do
@@ -54,18 +50,10 @@ module Search::Record::SQLite
     end
 
     def upsert_to_fts5_table
-      self.class.connection.exec_query(
-        "INSERT OR REPLACE INTO search_records_fts(rowid, title, content) VALUES (?, ?, ?)",
-        "Search::Record Upsert FTS5",
-        [id, title, content]
-      )
+      Fts.upsert(id, title, content)
     end
 
     def delete_from_fts5_table
-      self.class.connection.exec_query(
-        "DELETE FROM search_records_fts WHERE rowid = ?",
-        "Search::Record Delete FTS5",
-        [id]
-      )
+      search_records_fts&.destroy
     end
 end

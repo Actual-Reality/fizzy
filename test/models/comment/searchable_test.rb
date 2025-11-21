@@ -20,9 +20,23 @@ class Comment::SearchableTest < ActiveSupport::TestCase
 
     # Comment is removed from index on destroy
     comment_id = comment.id
+    search_record_id = record.id
+
+    # For SQLite, verify FTS entry exists before deletion
+    if Search::Record.connection.adapter_name == "SQLite"
+      fts_entry = record.search_records_fts
+      assert_not_nil fts_entry, "FTS entry should exist before comment deletion"
+    end
+
     comment.destroy
     record = Search::Record.find_by(searchable_type: "Comment", searchable_id: comment_id)
     assert_nil record
+
+    # For SQLite, verify FTS entry is also deleted
+    if Search::Record.connection.adapter_name == "SQLite"
+      fts_count = Search::Record::SQLite::Fts.where(rowid: search_record_id).count
+      assert_equal 0, fts_count, "FTS entry should be deleted after comment deletion"
+    end
 
     # Finding cards via comment search
     card_with_comment = @board.cards.create!(title: "Card One", creator: @user)
