@@ -37,14 +37,14 @@ class Search::Record < ApplicationRecord
 
   scope :for_query, ->(query:, user:) do
     if query.valid? && user.board_ids.any?
-      matching(query.to_s).for_user(user)
+      matching(query.to_s, user.account_id).for_user(user)
     else
       none
     end
   end
 
-  scope :matching, ->(query) do
-    where("MATCH(#{table_name}.content, #{table_name}.title) AGAINST(? IN BOOLEAN MODE)", query)
+  scope :matching, ->(query, account_id) do
+    where("MATCH(#{table_name}.account_key, #{table_name}.content, #{table_name}.title) AGAINST(? IN BOOLEAN MODE)", query)
   end
 
   scope :for_user, ->(user) do

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.2].define(version: 2025_11_20_203100) do
+ActiveRecord::Schema[8.2].define(version: 2025_11_21_092508) do
   create_table "accesses", id: :uuid, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "accessed_at"
     t.uuid "account_id", null: false
@@ -410,6 +410,7 @@ ActiveRecord::Schema[8.2].define(version: 2025_11_20_203100) do
 
   create_table "search_records_0", id: :uuid, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.uuid "account_id", null: false
+    t.string "account_key", default: "", null: false
     t.uuid "board_id", null: false
     t.uuid "card_id", null: false
     t.text "content"
@@ -418,12 +419,14 @@ ActiveRecord::Schema[8.2].define(version: 2025_11_20_203100) do
     t.string "searchable_type", null: false
     t.string "title"
     t.index ["account_id"], name: "index_search_records_0_on_account_id"
+    t.index ["account_key", "content", "title"], name: "index_search_records_0_on_account_key_and_content_and_title", type: :fulltext
     t.index ["content", "title"], name: "index_search_records_0_on_content_and_title", type: :fulltext
     t.index ["searchable_type", "searchable_id"], name: "index_search_records_0_on_searchable_type_and_searchable_id", unique: true
   end
 
   create_table "search_records_1", id: :uuid, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.uuid "account_id", null: false
+    t.string "account_key", default: "", null: false
     t.uuid "board_id", null: false
     t.uuid "card_id", null: false
     t.text "content"
@@ -432,12 +435,14 @@ ActiveRecord::Schema[8.2].define(version: 2025_11_20_203100) do
     t.string "searchable_type", null: false
     t.string "title"
     t.index ["account_id"], name: "index_search_records_1_on_account_id"
+    t.index ["account_key", "content", "title"], name: "index_search_records_1_on_account_key_and_content_and_title", type: :fulltext
     t.index ["content", "title"], name: "index_search_records_1_on_content_and_title", type: :fulltext
     t.index ["searchable_type", "searchable_id"], name: "index_search_records_1_on_searchable_type_and_searchable_id", unique: true
   end
 
   create_table "search_records_10", id: :uuid, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.uuid "account_id", null: false
+    t.string "account_key", default: "", null: false
     t.uuid "board_id", null: false
     t.uuid "card_id", null: false
     t.text "content"
@@ -446,12 +451,14 @@ ActiveRecord::Schema[8.2].define(version: 2025_11_20_203100) do
     t.string "searchable_type", null: false
     t.string "title"
     t.index ["account_id"], name: "index_search_records_10_on_account_id"
+    t.index ["account_key", "content", "title"], name: "index_search_records_10_on_account_key_and_content_and_title", type: :fulltext
     t.index ["content", "title"], name: "index_search_records_10_on_content_and_title", type: :fulltext
     t.index ["searchable_type", "searchable_id"], name: "index_search_records_10_on_searchable_type_and_searchable_id", unique: true
   end
 
   create_table "search_records_11", id: :uuid, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.uuid "account_id", null: false
+    t.string "account_key", default: "", null: false
     t.uuid "board_id", null: false
     t.uuid "card_id", null: false
     t.text "content"
@@ -460,12 +467,14 @@ ActiveRecord::Schema[8.2].define(version: 2025_11_20_203100) do
     t.string "searchable_type", null: false
     t.string "title"
     t.index ["account_id"], name: "index_search_records_11_on_account_id"
+    t.index ["account_key", "content", "title"], name: "index_search_records_11_on_account_key_and_content_and_title", type: :fulltext
     t.index ["content", "title"], name: "index_search_records_11_on_content_and_title", type: :fulltext
     t.index ["searchable_type", "searchable_id"], name: "index_search_records_11_on_searchable_type_and_searchable_id", unique: true
   end
 
   create_table "search_records_12", id: :uuid, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.uuid "account_id", null: false
+    t.string "account_key", default: "", null: false
     t.uuid "board_id", null: false
     t.uuid "card_id", null: false
     t.text "content"
@@ -474,12 +483,14 @@ ActiveRecord::Schema[8.2].define(version: 2025_11_20_203100) do
     t.string "searchable_type", null: false
     t.string "title"
     t.index ["account_id"], name: "index_search_records_12_on_account_id"
+    t.index ["account_key", "content", "title"], name: "index_search_records_12_on_account_key_and_content_and_title", type: :fulltext
     t.index ["content", "title"], name: "index_search_records_12_on_content_and_title", type: :fulltext
     t.index ["searchable_type", "searchable_id"], name: "index_search_records_12_on_searchable_type_and_searchable_id", unique: true
   end
 
   create_table "search_records_13", id: :uuid, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.uuid "account_id", null: false
+    t.string "account_key", default: "", null: false
     t.uuid "board_id", null: false
     t.uuid "card_id", null: false
     t.text "content"
@@ -488,12 +499,14 @@ ActiveRecord::Schema[8.2].define(version: 2025_11_20_203100) do
     t.string "searchable_type", null: false
     t.string "title"
     t.index ["account_id"], name: "index_search_records_13_on_account_id"
+    t.index ["account_key", "content", "title"], name: "index_search_records_13_on_account_key_and_content_and_title", type: :fulltext
     t.index ["content", "title"], name: "index_search_records_13_on_content_and_title", type: :fulltext
     t.index ["searchable_type", "searchable_id"], name: "index_search_records_13_on_searchable_type_and_searchable_id", unique: true
   end
 
   create_table "search_records_14", id: :uuid, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.uuid "account_id", null: false
+    t.string "account_key", default: "", null: false
     t.uuid "board_id", null: false
     t.uuid "card_id", null: false
     t.text "content"
@@ -502,12 +515,14 @@ ActiveRecord::Schema[8.2].define(version: 2025_11_20_203100) do
     t.string "searchable_type", null: false
     t.string "title"
     t.index ["account_id"], name: "index_search_records_14_on_account_id"
+    t.index ["account_key", "content", "title"], name: "index_search_records_14_on_account_key_and_content_and_title", type: :fulltext
     t.index ["content", "title"], name: "index_search_records_14_on_content_and_title", type: :fulltext
     t.index ["searchable_type", "searchable_id"], name: "index_search_records_14_on_searchable_type_and_searchable_id", unique: true
   end
 
   create_table "search_records_15", id: :uuid, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.uuid "account_id", null: false
+    t.string "account_key", default: "", null: false
     t.uuid "board_id", null: false
     t.uuid "card_id", null: false
     t.text "content"
@@ -516,12 +531,14 @@ ActiveRecord::Schema[8.2].define(version: 2025_11_20_203100) do
     t.string "searchable_type", null: false
     t.string "title"
     t.index ["account_id"], name: "index_search_records_15_on_account_id"
+    t.index ["account_key", "content", "title"], name: "index_search_records_15_on_account_key_and_content_and_title", type: :fulltext
     t.index ["content", "title"], name: "index_search_records_15_on_content_and_title", type: :fulltext
     t.index ["searchable_type", "searchable_id"], name: "index_search_records_15_on_searchable_type_and_searchable_id", unique: true
   end
 
   create_table "search_records_2", id: :uuid, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.uuid "account_id", null: false
+    t.string "account_key", default: "", null: false
     t.uuid "board_id", null: false
     t.uuid "card_id", null: false
     t.text "content"
@@ -530,12 +547,14 @@ ActiveRecord::Schema[8.2].define(version: 2025_11_20_203100) do
     t.string "searchable_type", null: false
     t.string "title"
     t.index ["account_id"], name: "index_search_records_2_on_account_id"
+    t.index ["account_key", "content", "title"], name: "index_search_records_2_on_account_key_and_content_and_title", type: :fulltext
     t.index ["content", "title"], name: "index_search_records_2_on_content_and_title", type: :fulltext
     t.index ["searchable_type", "searchable_id"], name: "index_search_records_2_on_searchable_type_and_searchable_id", unique: true
   end
 
   create_table "search_records_3", id: :uuid, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.uuid "account_id", null: false
+    t.string "account_key", default: "", null: false
     t.uuid "board_id", null: false
     t.uuid "card_id", null: false
     t.text "content"
@@ -544,12 +563,14 @@ ActiveRecord::Schema[8.2].define(version: 2025_11_20_203100) do
     t.string "searchable_type", null: false
     t.string "title"
     t.index ["account_id"], name: "index_search_records_3_on_account_id"
+    t.index ["account_key", "content", "title"], name: "index_search_records_3_on_account_key_and_content_and_title", type: :fulltext
     t.index ["content", "title"], name: "index_search_records_3_on_content_and_title", type: :fulltext
     t.index ["searchable_type", "searchable_id"], name: "index_search_records_3_on_searchable_type_and_searchable_id", unique: true
   end
 
   create_table "search_records_4", id: :uuid, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.uuid "account_id", null: false
+    t.string "account_key", default: "", null: false
     t.uuid "board_id", null: false
     t.uuid "card_id", null: false
     t.text "content"
@@ -558,12 +579,14 @@ ActiveRecord::Schema[8.2].define(version: 2025_11_20_203100) do
     t.string "searchable_type", null: false
     t.string "title"
     t.index ["account_id"], name: "index_search_records_4_on_account_id"
+    t.index ["account_key", "content", "title"], name: "index_search_records_4_on_account_key_and_content_and_title", type: :fulltext
     t.index ["content", "title"], name: "index_search_records_4_on_content_and_title", type: :fulltext
     t.index ["searchable_type", "searchable_id"], name: "index_search_records_4_on_searchable_type_and_searchable_id", unique: true
   end
 
   create_table "search_records_5", id: :uuid, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.uuid "account_id", null: false
+    t.string "account_key", default: "", null: false
     t.uuid "board_id", null: false
     t.uuid "card_id", null: false
     t.text "content"
@@ -572,12 +595,14 @@ ActiveRecord::Schema[8.2].define(version: 2025_11_20_203100) do
     t.string "searchable_type", null: false
     t.string "title"
     t.index ["account_id"], name: "index_search_records_5_on_account_id"
+    t.index ["account_key", "content", "title"], name: "index_search_records_5_on_account_key_and_content_and_title", type: :fulltext
     t.index ["content", "title"], name: "index_search_records_5_on_content_and_title", type: :fulltext
     t.index ["searchable_type", "searchable_id"], name: "index_search_records_5_on_searchable_type_and_searchable_id", unique: true
   end
 
   create_table "search_records_6", id: :uuid, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.uuid "account_id", null: false
+    t.string "account_key", default: "", null: false
     t.uuid "board_id", null: false
     t.uuid "card_id", null: false
     t.text "content"
@@ -586,12 +611,14 @@ ActiveRecord::Schema[8.2].define(version: 2025_11_20_203100) do
     t.string "searchable_type", null: false
     t.string "title"
     t.index ["account_id"], name: "index_search_records_6_on_account_id"
+    t.index ["account_key", "content", "title"], name: "index_search_records_6_on_account_key_and_content_and_title", type: :fulltext
     t.index ["content", "title"], name: "index_search_records_6_on_content_and_title", type: :fulltext
     t.index ["searchable_type", "searchable_id"], name: "index_search_records_6_on_searchable_type_and_searchable_id", unique: true
   end
 
   create_table "search_records_7", id: :uuid, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.uuid "account_id", null: false
+    t.string "account_key", default: "", null: false
     t.uuid "board_id", null: false
     t.uuid "card_id", null: false
     t.text "content"
@@ -600,12 +627,14 @@ ActiveRecord::Schema[8.2].define(version: 2025_11_20_203100) do
     t.string "searchable_type", null: false
     t.string "title"
     t.index ["account_id"], name: "index_search_records_7_on_account_id"
+    t.index ["account_key", "content", "title"], name: "index_search_records_7_on_account_key_and_content_and_title", type: :fulltext
     t.index ["content", "title"], name: "index_search_records_7_on_content_and_title", type: :fulltext
     t.index ["searchable_type", "searchable_id"], name: "index_search_records_7_on_searchable_type_and_searchable_id", unique: true
   end
 
   create_table "search_records_8", id: :uuid, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.uuid "account_id", null: false
+    t.string "account_key", default: "", null: false
     t.uuid "board_id", null: false
     t.uuid "card_id", null: false
     t.text "content"
@@ -614,12 +643,14 @@ ActiveRecord::Schema[8.2].define(version: 2025_11_20_203100) do
     t.string "searchable_type", null: false
     t.string "title"
     t.index ["account_id"], name: "index_search_records_8_on_account_id"
+    t.index ["account_key", "content", "title"], name: "index_search_records_8_on_account_key_and_content_and_title", type: :fulltext
     t.index ["content", "title"], name: "index_search_records_8_on_content_and_title", type: :fulltext
     t.index ["searchable_type", "searchable_id"], name: "index_search_records_8_on_searchable_type_and_searchable_id", unique: true
   end
 
   create_table "search_records_9", id: :uuid, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.uuid "account_id", null: false
+    t.string "account_key", default: "", null: false
     t.uuid "board_id", null: false
     t.uuid "card_id", null: false
     t.text "content"
@@ -628,6 +659,7 @@ ActiveRecord::Schema[8.2].define(version: 2025_11_20_203100) do
     t.string "searchable_type", null: false
     t.string "title"
     t.index ["account_id"], name: "index_search_records_9_on_account_id"
+    t.index ["account_key", "content", "title"], name: "index_search_records_9_on_account_key_and_content_and_title", type: :fulltext
     t.index ["content", "title"], name: "index_search_records_9_on_content_and_title", type: :fulltext
     t.index ["searchable_type", "searchable_id"], name: "index_search_records_9_on_searchable_type_and_searchable_id", unique: true
   end
