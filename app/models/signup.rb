@@ -54,7 +54,7 @@ class Signup
     end
 
     def create_account
-      @account = Account.create_with_admin_user(
+      @account = Account.create_with_owner(
         account: {
           external_account_id: @tenant,
           name: generate_account_name
@@ -64,7 +64,7 @@ class Signup
           identity: identity
         }
       )
-      @user = @account.users.find_by!(role: :admin)
+      @user = @account.users.find_by!(role: :owner)
       @account.setup_customer_template
     end
 
