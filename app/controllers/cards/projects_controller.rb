@@ -1,0 +1,20 @@
+class Cards::ProjectsController < ApplicationController
+  before_action :set_card
+
+  def edit
+  end
+
+  def update
+    @card.update(project_params)
+    redirect_to @card
+  end
+
+  private
+    def set_card
+      @card = Current.account.cards.find(params[:card_id])
+    end
+
+    def project_params
+      params.require(:card).permit(:project_id)
+    end
+end

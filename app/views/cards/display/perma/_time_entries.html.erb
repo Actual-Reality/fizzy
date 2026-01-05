@@ -1,0 +1,69 @@
+<div class="card__section margin-block-start">
+  <h3 class="txt-medium txt-bold margin-block-end-half">Time Tracking</h3>
+
+  <div class="time-entries-list margin-block-end">
+    <% if card.time_entries.any? %>
+      <table class="table table--compact">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Date</th>
+            <th>Duration</th>
+            <th>Description</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% card.time_entries.includes(:user).order(started_at: :desc).each do |entry| %>
+            <tr>
+              <td><%= entry.user.name %></td>
+              <td><%= local_time(entry.started_at, format: :default_date) %></td>
+              <td><%= entry.duration_string %></td>
+              <td><%= entry.description %></td>
+              <td>
+                <% if entry.user == Current.user || Current.user.admin? %>
+                  <%= link_to icon_tag("trash"), card_time_entry_path(card, entry), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn--small btn--icon" %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2" class="txt-bold txt-align-right">Total:</td>
+            <td class="txt-bold">
+              <% total_mins = card.time_entries.sum(:duration) %>
+              <%= "#{total_mins / 60}h #{total_mins % 60}m" %>
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    <% else %>
+      <p class="txt-dim txt-small">No time recorded yet.</p>
+    <% end %>
+  </div>
+
+  <div class="time-entry-form panel panel--subtle padding">
+    <h4 class="txt-small txt-bold margin-block-end-half">Log Time</h4>
+    <%= form_with model: [card, card.time_entries.new], class: "flex align-end gap-half flex-wrap" do |form| %>
+      <div class="field">
+        <%= form.label :started_at, "Date", class: "label txt-small" %>
+        <%= form.date_field :started_at, value: Date.current, class: "input input--small" %>
+      </div>
+
+      <div class="field">
+        <%= form.label :duration_string, "Duration", class: "label txt-small" %>
+        <%= form.text_field :duration_string, placeholder: "e.g. 2h 30m", class: "input input--small", size: 10 %>
+      </div>
+
+      <div class="field flex-grow">
+        <%= form.label :description, "Description", class: "label txt-small" %>
+        <%= form.text_field :description, placeholder: "What did you do?", class: "input input--small full-width" %>
+      </div>
+
+      <%= form.submit "Log Time", class: "btn btn--small btn--primary" %>
+    <% end %>
+  </div>
+</div>

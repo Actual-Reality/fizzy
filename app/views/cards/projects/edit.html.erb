@@ -1,0 +1,5 @@
+<%= form_with model: @card, url: card_project_path(@card), method: :patch, class: "flex-column gap-half" do |form| %>
+  <div class="field">
+    <%= form.collection_select :project_id, Current.account.projects.order(:name), :id, :name, { include_blank: "No Project" }, { class: "input full-width", onchange: "this.form.requestSubmit()" } %>
+  </div>
+<% end %>

@@ -5,9 +5,11 @@ class Card < ApplicationRecord
 
   belongs_to :account, default: -> { board.account }
   belongs_to :board
+  belongs_to :project, optional: true
   belongs_to :creator, class_name: "User", default: -> { Current.user }
 
   has_many :comments, dependent: :destroy
+  has_many :time_entries, dependent: :destroy
   has_one_attached :image, dependent: :purge_later
 
   has_rich_text :description

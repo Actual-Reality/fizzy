@@ -9,6 +9,7 @@
       <%= card_article_tag card, class: "card" do %>
         <header class="card__header">
           <%= render "cards/display/perma/board", card: card %>
+          <%= render "cards/display/perma/project", card: card %>
           <%= render "cards/display/perma/tags", card: card %>
         </header>
 
@@ -16,6 +17,7 @@
           <div class="card__content">
             <%= render "cards/container/content", card: card %>
             <%= render "cards/display/perma/steps", card: card %>
+            <%= render "cards/display/perma/time_entries", card: card %>
           </div>
 
           <% if card.published? %>

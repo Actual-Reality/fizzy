@@ -78,6 +78,7 @@ Rails.application.routes.draw do
       resource :image
       resource :not_now
       resource :pin
+      resource :project
       resource :publish
       resource :reading
       resource :triage
@@ -87,6 +88,7 @@ Rails.application.routes.draw do
       resources :assignments
       resources :steps
       resources :taggings
+      resources :time_entries, only: [:create, :destroy]
 
       resources :comments do
         resources :reactions, module: :comments
@@ -122,6 +124,12 @@ Rails.application.routes.draw do
       collection do
         resource :settings_refresh, only: :create
       end
+    end
+  end
+
+  resources :projects do
+    member do
+      get :report
     end
   end
 
