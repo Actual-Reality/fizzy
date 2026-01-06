@@ -1,19 +1,24 @@
 let top = 0
+const viewportTarget = window.visualViewport || window
 
 export const viewport = {
   get top() {
     return top
   },
   get height() {
-    return visualViewport.height
+    return viewportTarget.height || window.innerHeight
   }
 }
 
 function update() {
   requestAnimationFrame(() => {
-    top = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--safe-area-inset-top"))
+    const styles = getComputedStyle(document.documentElement)
+    const customInset = styles.getPropertyValue("--custom-safe-inset-top")
+    const fallbackInset = styles.getPropertyValue("--safe-area-inset-top")
+    const insetValue = (customInset || fallbackInset).trim()
+    top = parseInt(insetValue || "0", 10) || 0
   })
 }
 
-visualViewport.addEventListener("resize", update)
+viewportTarget.addEventListener("resize", update)
 update()
