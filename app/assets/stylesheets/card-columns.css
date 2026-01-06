@@ -182,10 +182,14 @@
   .cards__transition-container {
     block-size: 100%;
     border-radius: calc(var(--column-width-collapsed) / 2);
-    translate: 0 0.5ch; // Allow a little room for the mini bubble */
+    translate: 0 0.5ch; /* Allow a little room for the mini bubble */
     transition: translate var(--column-transition-duration) var(--ease-out-overshoot-subtle);
 
     @media (min-width: 640px) {
+      .is-expanded & {
+        translate: 0 0.5ch; /* Allow a little room for the mini bubble */
+      }
+
       .is-collapsed & {
         translate: 0 var(--column-width-collapsed);
       }
@@ -366,6 +370,7 @@
     font-weight: 600;
     gap: 0.5ch;
     grid-area: expander;
+    justify-content: center;
     outline: none;
     outline-offset: -2px;
     position: relative;
