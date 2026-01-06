@@ -14,8 +14,13 @@ class Cards::TimeEntriesController < ApplicationController
 
   def destroy
     @time_entry = @card.time_entries.find(params[:id])
-    @time_entry.destroy
-    redirect_to @card, notice: "Time entry removed."
+
+    if @time_entry.user == Current.user || Current.user.admin?
+      @time_entry.destroy
+      redirect_to @card, notice: "Time entry removed."
+    else
+      redirect_to @card, alert: "You can only delete your own time entries."
+    end
   end
 
   private
