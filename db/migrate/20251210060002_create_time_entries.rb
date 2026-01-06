@@ -5,7 +5,7 @@ class CreateTimeEntries < ActiveRecord::Migration[8.2]
       t.references :user, null: false, foreign_key: true, type: :uuid
       t.integer :duration
       t.date :started_at
-      t.text :description
+      t.string :description, null: false
 
       t.timestamps
     end

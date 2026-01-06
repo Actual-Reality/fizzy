@@ -29,6 +29,6 @@ class Cards::TimeEntriesController < ApplicationController
     end
 
     def time_entry_params
-      params.require(:time_entry).permit(:duration_string, :started_at, :description)
+      params.expect(time_entry: [ :duration_string, :started_at, :description ])
     end
 end

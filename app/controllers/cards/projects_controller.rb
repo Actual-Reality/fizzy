@@ -15,6 +15,6 @@ class Cards::ProjectsController < ApplicationController
     end
 
     def project_params
-      params.require(:card).permit(:project_id)
+      params.expect(card: [ :project_id ])
     end
 end

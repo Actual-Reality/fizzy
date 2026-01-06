@@ -3,7 +3,7 @@
 <div class="header">
   <div class="header__title">
     <h1>Report: <%= @project.name %></h1>
-    <div class="txt-dim txt-small">Total Time: <%= "#{@total_duration / 60}h #{@total_duration % 60}m" %></div>
+    <div class="txt-dim txt-small">Total Time: <%= TimeEntry.format_duration(@total_duration) %></div>
   </div>
   <div class="header__actions">
     <%= link_to "Back to Projects", projects_path, class: "btn" %>
@@ -29,7 +29,7 @@
               <strong><%= user.name %></strong>
             </div>
           </td>
-          <td><%= "#{user_total / 60}h #{user_total % 60}m" %></td>
+          <td><%= TimeEntry.format_duration(user_total) %></td>
           <td>
             <div class="flex flex-wrap gap-half">
               <% entries.map(&:card).uniq.each do |card| %>

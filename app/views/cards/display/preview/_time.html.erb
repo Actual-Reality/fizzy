@@ -2,6 +2,6 @@
 <% if total_mins > 0 %>
   <div class="card__meta-text card__meta-text--time txt-dim" title="Total time logged">
     <%= icon_tag "clock" %>
-    <%= "#{total_mins / 60}h #{total_mins % 60}m" %>
+    <%= TimeEntry.format_duration(total_mins) %>
   </div>
 <% end %>

@@ -4,20 +4,25 @@ class TimeEntry < ApplicationRecord
 
   validates :duration, presence: true, numericality: { greater_than: 0 }
   validates :started_at, presence: true
+  validates :description, presence: true
 
-  def duration_string
-    return "" unless duration
+  def self.format_duration(minutes)
+    return "" unless minutes && minutes > 0
 
-    hours = duration / 60
-    minutes = duration % 60
+    hours = minutes / 60
+    mins = minutes % 60
 
-    if hours > 0 && minutes > 0
-      "#{hours}h #{minutes}m"
+    if hours > 0 && mins > 0
+      "#{hours}h #{mins}m"
     elsif hours > 0
       "#{hours}h"
     else
-      "#{minutes}m"
+      "#{mins}m"
     end
+  end
+
+  def duration_string
+    self.class.format_duration(duration)
   end
 
   def duration_string=(value)

@@ -33,7 +33,7 @@
             <td colspan="2" class="txt-bold txt-align-right">Total:</td>
             <td class="txt-bold">
               <% total_mins = card.time_entries.sum(:duration) %>
-              <%= "#{total_mins / 60}h #{total_mins % 60}m" %>
+              <%= TimeEntry.format_duration(total_mins) %>
             </td>
             <td></td>
             <td></td>
