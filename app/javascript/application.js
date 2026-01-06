@@ -2,7 +2,6 @@
 import "@hotwired/turbo-rails"
 import "@hotwired/hotwire-native-bridge"
 import "initializers"
-import "bridge/initializers"
 import "controllers"
 
 import "lexxy"

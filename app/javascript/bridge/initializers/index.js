@@ -1,1 +1,1 @@
-// Bridge initializers live here.
+import "bridge/initializers/bridge_element"
