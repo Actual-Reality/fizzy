@@ -12,6 +12,7 @@
     padding-block-start: 2px; /* prevents input focus-ring clipping on mobile */
     position: relative;
     view-transition-name: filters;
+    z-index: 1;
 
     .btn {
       --btn-border-color: var(--color-ink-medium);
