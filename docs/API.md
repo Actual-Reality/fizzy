@@ -779,6 +779,22 @@ __Response:__
 
 Returns `204 No Content` on success.
 
+### `POST /:account_slug/cards/:card_number/goldness`
+
+Marks a card as golden.
+
+__Response:__
+
+Returns `204 No Content` on success.
+
+### `DELETE /:account_slug/cards/:card_number/goldness`
+
+Removes golden status from a card.
+
+__Response:__
+
+Returns `204 No Content` on success.
+
 ## Comments
 
 Comments are attached to cards and support rich text.
