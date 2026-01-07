@@ -43,3 +43,7 @@ BridgeElement.prototype.getOrder = function() {
 BridgeElement.prototype.shouldDisplayAsFormSubmitMenu = function() {
   return this.bridgeAttribute("display-as-form-submit-menu") === "true"
 }
+
+BridgeElement.prototype.displaysNavButtonMenu = function() {
+  return this.bridgeAttribute("displays-nav-button-menu") === "true"
+}
