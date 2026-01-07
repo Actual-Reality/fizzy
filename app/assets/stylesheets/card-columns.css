@@ -8,17 +8,15 @@
       block-size: 100dvh;
       grid-template-rows: 1fr var(--footer-height);
 
-      #global-container,
-      #main {
+      #global-container {
         display: grid;
         grid-template-rows: auto 1fr;
-      }
-
-      #global-container {
         overflow: hidden;
       }
 
       #main {
+        display: grid;
+        grid-template-rows: auto auto 1fr;
         overflow: auto;
         padding: 0;
       }
@@ -496,7 +494,7 @@
   /* Override card styles within columns
   /* ------------------------------------------------------------------------ */
 
-  .cards {
+  .body--boards {
     .card {
       --block-space: 1em;
       --block-space-half: 0.5em;
@@ -646,6 +644,24 @@
     inline-size: auto;
     text-align: center;
 
+    @media (max-width: 639px) {
+      /* On mobile, hide the tool card inside the Maybe column */
+      .cards & {
+        display: none;
+      }
+
+      #cards_container > & {
+        margin: 0 3ch 1ch;
+      }
+    }
+
+    @media (min-width: 640px) {
+      /* On desktop, hide the tool card above the columns */
+      #cards_container > & {
+        display: none;
+      }
+    }
+
     @media (min-width: 800px) {
       margin: var(--column-padding) var(--column-padding) 0;
     }
@@ -654,8 +670,8 @@
       z-index: 5;
     }
 
-    .separator--horizontal {
-      margin-block: var(--block-space);
+    .divider {
+      --divider-color: oklch(var(--lch-blue-light));
     }
 
     .btn--link {
@@ -669,7 +685,7 @@
 
     footer {
       font-size: var(--text-x-small);
-      margin-block-end: calc(var(--block-space-half) * -1);
+      margin-block: 1ch calc(var(--block-space-half) * -1);
     }
 
     .overflow-count {
