@@ -35,6 +35,21 @@ class Cards::TimeEntriesController < ApplicationController
     end
   end
 
+  def update
+    @time_entry = @card.time_entries.find(params[:id])
+
+    unless @time_entry.user == Current.user || Current.user.admin?
+      redirect_to @card, alert: "You can only edit your own time entries.", status: :see_other
+      return
+    end
+
+    if @time_entry.update(time_entry_params)
+      redirect_to @card, status: :see_other
+    else
+      redirect_to @card, alert: "Failed to update time entry.", status: :unprocessable_entity
+    end
+  end
+
   def destroy
     @time_entry = @card.time_entries.find(params[:id])
 

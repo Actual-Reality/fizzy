@@ -222,8 +222,8 @@
     grid-template-areas:
       "avatars-author text-added text-updated avatars-assignees text-time"
       "avatars-author text-author text-assignees avatars-assignees .";
-    grid-template-columns: auto auto 1fr auto auto;
-    inline-size: fit-content;
+    grid-template-columns: auto auto auto auto 1fr;
+    inline-size: 100%;
     text-transform: uppercase;
 
     strong,
@@ -239,7 +239,7 @@
   .card__meta-text--author { grid-area: text-author; }
   .card__meta-text--updated { grid-area: text-updated; }
   .card__meta-text--assignees { grid-area: text-assignees; }
-  .card__meta-text--time { grid-area: text-time; }
+  .card__meta-text--time { grid-area: text-time; justify-self: end; }
 
   .card__meta-avatars {
     align-self: center;

@@ -42,16 +42,22 @@
     </div>
 
     <% if running_timer %>
-      <div class="bg-highlight-faint padding-half border-radius margin-block-end flex align-center justify-between" data-controller="timer" data-timer-start-time-value="<%= running_timer.started_at.iso8601 %>">
-        <div class="flex align-center gap-half">
-          <span class="steps__icon txt-highlight"><%= icon_tag "clock", size: 16 %></span>
-          <div class="flex flex-column">
-            <span class="txt-tiny txt-bold txt-highlight">Running</span>
-            <span class="txt-medium txt-bold tabular-nums txt-highlight" data-timer-target="output">0m 0s</span>
+      <div class="bg-highlight-faint padding-half border-radius margin-block-end">
+        <div class="flex align-center justify-between margin-block-end-half" data-controller="timer" data-timer-start-time-value="<%= running_timer.started_at.iso8601 %>">
+          <div class="flex align-center gap-half">
+            <span class="steps__icon txt-highlight"><%= icon_tag "clock", size: 16 %></span>
+            <div class="flex flex-column">
+              <span class="txt-tiny txt-bold txt-highlight">Running</span>
+              <span class="txt-medium txt-bold tabular-nums txt-highlight" data-timer-target="output">0m 0s</span>
+            </div>
           </div>
+          <%= link_to stop_card_time_entries_path(card), class: "btn btn--small btn--primary", data: { turbo_method: :post } do %>
+            Stop
+          <% end %>
         </div>
-        <%= link_to stop_card_time_entries_path(card), class: "btn btn--small btn--primary", data: { turbo_method: :post } do %>
-          Stop
+
+        <%= form_with model: [card, running_timer], class: "width-full", data: { controller: "form", action: "input->form#debouncedSubmit" } do |form| %>
+          <%= form.text_field :description, class: "input input--small full-width", placeholder: "What are you working on?" %>
         <% end %>
       </div>
     <% end %>
