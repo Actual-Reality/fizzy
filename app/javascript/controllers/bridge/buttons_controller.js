@@ -5,6 +5,10 @@ export default class extends BridgeComponent {
   static component = "buttons"
   static targets = [ "button" ]
 
+  static shouldLoad() {
+    return true
+  }
+
   connect() {
     super.connect()
     if (!this.hasButtonTarget) return

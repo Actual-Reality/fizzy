@@ -1,2 +1,2 @@
 import "initializers/current"
-import "bridge/initializers"
+import "initializers/bridge/bridge_element"

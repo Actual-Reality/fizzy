@@ -1,5 +1,5 @@
 import { BridgeComponent } from "@hotwired/hotwire-native-bridge"
-import { viewport } from "bridge/helpers/viewport"
+import { viewport } from "helpers/bridge/viewport_helpers"
 import { nextFrame } from "helpers/timing_helpers"
 
 export default class extends BridgeComponent {
