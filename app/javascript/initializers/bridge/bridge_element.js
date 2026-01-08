@@ -20,11 +20,10 @@ BridgeElement.prototype.getButton = function() {
 }
 
 BridgeElement.prototype.getIcon = function() {
-  const name = this.bridgeAttribute("icon-name")
-  const url = this.bridgeAttribute(`icon-${this.platform}-url`)
+  const url = this.bridgeAttribute(`icon-url`)
 
-  if (name || url) {
-    return { name, url }
+  if (url) {
+    return { url }
   }
 
   return null
