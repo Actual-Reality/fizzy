@@ -8,9 +8,11 @@ export default class extends BridgeComponent {
 
   connect() {
     super.connect()
-    if (!this.hasSubmitTarget) return
-    this.notifyBridgeOfConnect()
-    this.observeSubmitTarget()
+
+    if (this.hasSubmitTarget) {
+      this.notifyBridgeOfConnect()
+      this.observeSubmitTarget()
+    }
   }
 
   disconnect() {

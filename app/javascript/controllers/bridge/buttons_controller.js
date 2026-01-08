@@ -7,13 +7,18 @@ export default class extends BridgeComponent {
 
   connect() {
     super.connect()
-    if (!this.hasButtonTarget) return
-    this.notifyBridgeOfConnect()
+
+    if (this.hasButtonTarget) {
+      this.notifyBridgeOfConnect()
+    }
   }
 
   disconnect() {
     super.disconnect()
-    this.notifyBridgeOfDisconnect()
+
+    if (this.hasButtonTarget) {
+      this.notifyBridgeOfDisconnect()
+    }
   }
 
   notifyBridgeOfConnect() {
@@ -23,7 +28,7 @@ export default class extends BridgeComponent {
     })
 
     this.send("connect", { buttons }, message => {
-      this.activateButton(message)
+      this.clickButton(message)
     })
   }
 
@@ -31,7 +36,7 @@ export default class extends BridgeComponent {
     this.send("disconnect")
   }
 
-  activateButton(message) {
+  clickButton(message) {
     const selectedIndex = message.data.selectedIndex
     this.buttonTargets[selectedIndex].click()
   }
