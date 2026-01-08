@@ -52,6 +52,12 @@
   }
 }
 
+[data-bridge-components~=overflow-menu] {
+  [data-controller~=bridge--overflow-menu] {
+    display: none;
+  }
+}
+
 [data-bridge-components~=buttons] {
   [data-bridge--buttons-target~=button]:not(summary) {
     display: none;
