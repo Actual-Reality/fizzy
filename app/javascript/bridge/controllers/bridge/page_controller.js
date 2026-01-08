@@ -36,10 +36,7 @@ export default class extends BridgeComponent {
   // Bridge
 
   notifyBridgeOfPageChange() {
-    const data = {
-      title: this.title,
-      url: window.location.href
-    }
+    const data = { title: this.title }
 
     if (this.hasHeaderTarget) {
       // Assume header visible by default until we get IntersectionObserver update
