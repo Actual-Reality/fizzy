@@ -59,18 +59,7 @@
 }
 
 [data-bridge-components~=buttons] {
-  [data-bridge--buttons-target~=button]:not(summary) {
+  [data-bridge--buttons-target~=button] {
     display: none;
-  }
-
-  summary[data-bridge--buttons-target~=button] {
-    overflow: hidden;
-    width: 0;
-    height: 0;
-    position: absolute;
-
-    * {
-      display: none;
-    }
   }
 }
