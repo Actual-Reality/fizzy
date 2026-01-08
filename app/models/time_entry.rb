@@ -2,9 +2,12 @@ class TimeEntry < ApplicationRecord
   belongs_to :card, touch: true
   belongs_to :user
 
-  validates :duration, presence: true, numericality: { greater_than: 0 }
+  validates :duration, presence: true, numericality: { greater_than: 0 }, unless: :running?
   validates :started_at, presence: true
-  validates :description, presence: true
+  validates :description, presence: true, on: :update, unless: :running?
+
+  scope :running, -> { where(ended_at: nil, duration: nil) }
+  scope :completed, -> { where.not(duration: nil) }
 
   def self.format_duration(minutes)
     return "" unless minutes && minutes > 0
@@ -27,6 +30,19 @@ class TimeEntry < ApplicationRecord
 
   def duration_string=(value)
     self.duration = parse_duration(value)
+  end
+
+  def running?
+    started_at.present? && ended_at.nil? && duration.nil?
+  end
+
+  def stop!
+    return unless running?
+
+    self.ended_at = Time.current
+    self.duration = ((ended_at - started_at) / 60).to_i # Calculate duration in minutes
+    self.duration = 1 if self.duration < 1 # Ensure at least 1 minute
+    save!
   end
 
   private

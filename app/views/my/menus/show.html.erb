@@ -1,7 +1,7 @@
 <%= turbo_frame_tag "my_menu", target: "_top" do %>
   <%= render "my/menus/jump" do %>
     <%= render "my/menus/boards", boards: @boards %>
-    <%= render "my/menus/projects" %>
+    <%= render "my/menus/projects", projects: @projects %>
     <%= render "my/menus/tags", tags: @tags %>
     <%= render "my/menus/people", users: @users %>
     <%= render "my/menus/settings" %>

@@ -2,6 +2,7 @@
   <% cache card do %>
     <div class="card-perma__actions card-perma__actions--left">
       <%= render "cards/container/gild", card: card if card.published? && !card.closed? %>
+      <%= render "cards/container/time", card: card if card.published? && !card.closed? %>
       <%= render "cards/container/image", card: card %>
     </div>
 
@@ -17,7 +18,6 @@
           <div class="card__content">
             <%= render "cards/container/content", card: card %>
             <%= render "cards/display/perma/steps", card: card %>
-            <%= render "cards/display/perma/time_entries", card: card %>
           </div>
 
           <% if card.published? %>
@@ -25,9 +25,11 @@
           <% end %>
         </div>
 
-        <footer class="card__footer full-width flex align-start gap">
-          <%= render "cards/display/perma/meta", card: card %>
-          <%= render "cards/display/perma/background", card: card %>
+        <footer class="card__footer full-width flex flex-column gap">
+          <div class="flex align-start gap full-width">
+            <%= render "cards/display/perma/meta", card: card %>
+            <%= render "cards/display/perma/background", card: card %>
+          </div>
         </footer>
       <% end %>
 

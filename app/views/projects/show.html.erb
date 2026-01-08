@@ -1,0 +1,28 @@
+<% @page_title = @project.name %>
+<% turbo_exempts_page_from_cache %>
+
+<%= turbo_stream_from @project %>
+
+<% content_for :header do %>
+  <div class="header__actions header__actions--start">
+    <% # Future: Add project-specific actions %>
+  </div>
+
+  <h1 class="header__title divider divider--fade full-width">
+    <span class="overflow-ellipsis"><%= @project.name %></span>
+  </h1>
+
+  <div class="header__actions header__actions--end">
+    <%= link_to "Edit", edit_project_path(@project), class: "btn btn--small" %>
+  </div>
+<% end %>
+
+<%= turbo_frame_tag :cards_container do %>
+  <div class="card-columns hide-scrollbar">
+    <div class="cards__list full-width">
+       <%= with_automatic_pagination "project-cards", @page do %>
+         <%= render "cards/display/previews", cards: @page.records, draggable: false %>
+       <% end %>
+    </div>
+  </div>
+<% end %>

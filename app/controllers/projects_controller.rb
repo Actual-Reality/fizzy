@@ -1,8 +1,14 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: %i[ edit update destroy report ]
+  include FilterScoped
+
+  before_action :set_project, only: %i[ show edit update destroy report ]
 
   def index
     @projects = Current.account.projects.order(:name)
+  end
+
+  def show
+    set_page_and_extract_portion_from @project.cards.latest
   end
 
   def new

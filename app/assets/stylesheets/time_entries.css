@@ -1,0 +1,55 @@
+@layer components {
+  .time-entries {
+    display: flex;
+    flex-direction: column;
+    gap: var(--block-space-half);
+  }
+
+  .time-entry {
+    display: grid;
+    gap: 1ch;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    font-size: var(--text-small);
+    border-bottom: 1px solid var(--color-ink-lighter);
+    padding-block: 0.5ch;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .time-entry__meta {
+    color: var(--color-ink-light);
+    font-size: 0.9em;
+  }
+
+  .time-entry__duration {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .timer-control {
+    background-color: var(--color-canvas-subtle);
+    border: 1px solid var(--color-ink-lighter);
+    border-radius: var(--border-radius);
+    padding: var(--inline-space);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--inline-space);
+
+    &.timer-control--running {
+      background-color: var(--color-highlight-faint);
+      border-color: var(--color-highlight);
+    }
+  }
+
+  .timer-control__display {
+    font-variant-numeric: tabular-nums;
+    font-size: var(--text-large);
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+}

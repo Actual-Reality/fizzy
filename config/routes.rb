@@ -88,7 +88,12 @@ Rails.application.routes.draw do
       resources :assignments
       resources :steps
       resources :taggings
-      resources :time_entries, only: [:create, :destroy]
+      resources :time_entries, only: [:create, :destroy] do
+        collection do
+          post :start
+          post :stop
+        end
+      end
 
       resources :comments do
         resources :reactions, module: :comments
