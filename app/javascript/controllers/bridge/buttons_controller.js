@@ -5,8 +5,14 @@ export default class extends BridgeComponent {
   static component = "buttons"
   static targets = [ "button" ]
 
-  buttonTargetConnected(element) {
+  buttonTargetConnected() {
     this.notifyBridgeOfConnect()
+  }
+
+  buttonTargetDisconnected() {
+    if (!this.#isControllerTearingDown()) {
+      this.notifyBridgeOfConnect()
+    }
   }
 
   notifyBridgeOfConnect() {
@@ -29,5 +35,9 @@ export default class extends BridgeComponent {
   get #enabledButtonTargets() {
     return this.buttonTargets
       .filter(target => !target.closest("[data-bridge-disabled]"))
+  }
+
+  #isControllerTearingDown() {
+    return !document.body.contains(this.element)
   }
 }

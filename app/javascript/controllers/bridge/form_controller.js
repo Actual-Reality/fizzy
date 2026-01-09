@@ -17,6 +17,7 @@ export default class extends BridgeComponent {
 
   disconnect() {
     super.disconnect()
+    this.notifyBridgeOfDisonnect()
     this.submitObserver?.disconnect()
   }
 
@@ -27,6 +28,10 @@ export default class extends BridgeComponent {
     this.send("connect", { submitButton }, () => {
       this.submitTarget.click()
     })
+  }
+
+  notifyBridgeOfDisonnect() {
+    this.send("disconnect")
   }
 
   observeSubmitTarget() {

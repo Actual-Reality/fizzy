@@ -9,6 +9,12 @@ export default class extends BridgeComponent {
     this.notifyBridgeOfConnect()
   }
 
+  itemTargetDisconnected() {
+    if (!this.#isControllerTearingDown) {
+      this.notifyBridgeOfConnect()
+    }
+  }
+
   notifyBridgeOfConnect() {
     const items = this.#enabledItemTargets
       .map((target, index) => {
@@ -29,5 +35,9 @@ export default class extends BridgeComponent {
   get #enabledItemTargets() {
     return this.itemTargets
       .filter(target => !target.closest("[data-bridge-disabled]"))
+  }
+
+  #isControllerTearingDown() {
+    return !document.body.contains(this.element)
   }
 }
