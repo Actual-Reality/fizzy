@@ -10,20 +10,24 @@ export default class extends BridgeComponent {
   }
 
   notifyBridgeOfConnect() {
-    const buttons = this.buttonTargets
-      .filter(target => !target.closest("[data-bridge-disabled]"))
+    const buttons = this.#enabledButtonTargets
       .map((target, index) => {
         const element = new BridgeElement(target)
         return { ...element.getButton(), index }
     })
 
     this.send("connect", { buttons }, message => {
-      this.clickButton(message)
+      this.#clickButton(message)
     })
   }
 
-  clickButton(message) {
+  #clickButton(message) {
     const selectedIndex = message.data.selectedIndex
-    this.buttonTargets[selectedIndex].click()
+    this.#enabledButtonTargets[selectedIndex].click()
+  }
+
+  get #enabledButtonTargets() {
+    return this.buttonTargets
+      .filter(target => !target.closest("[data-bridge-disabled]"))
   }
 }
