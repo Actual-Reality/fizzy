@@ -305,12 +305,6 @@
       --btn-color: var(--color-ink-inverted);
     }
 
-    .btn--plain {
-      --btn-color: var(--card-color);
-
-      text-decoration: underline;
-    }
-
     .btn--reversed {
       --btn-background: var(--color-canvas);
       --btn-color: var(--card-color);
@@ -340,6 +334,12 @@
     grid-area: closure-message;
     margin-block: var(--block-space) var(--block-space-double);
     padding-inline: 1ch;
+
+    .btn--plain {
+      --btn-color: var(--card-color);
+
+      text-decoration: underline;
+    }
 
     @media (max-width: 799px) {
       margin-block: var(--block-space-half);
