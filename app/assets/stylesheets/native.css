@@ -46,7 +46,7 @@
 
 [data-bridge-components~=form] {
   [data-controller~=bridge--form] {
-    [type=submit] {
+    [data-bridge--form-target~=submit] {
       display: none;
     }
   }
