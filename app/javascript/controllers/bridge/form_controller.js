@@ -3,31 +3,38 @@ import { BridgeElement } from "@hotwired/hotwire-native-bridge"
 
 export default class extends BridgeComponent {
   static component = "form"
-  static targets = [ "submit" ]
+  static targets = [ "submit", "cancel" ]
   static values = { submitTitle: String }
 
-  connect() {
-    super.connect()
-
-    if (this.hasSubmitTarget) {
-      this.notifyBridgeOfConnect()
-      this.observeSubmitTarget()
-    }
+  submitTargetConnected() {
+    this.notifyBridgeOfConnect()
+    this.observeSubmitTarget()
   }
 
-  disconnect() {
-    super.disconnect()
+  submitTargetDisconnected() {
     this.notifyBridgeOfDisonnect()
     this.submitObserver?.disconnect()
   }
 
   notifyBridgeOfConnect() {
-    const element = new BridgeElement(this.submitTarget)
-    const submitButton = { title: element.title }
+    const submitElement = new BridgeElement(this.submitTarget)
+    const cancelElement = this.hasCancelTarget ? new BridgeElement(this.cancelTarget) : null
 
-    this.send("connect", { submitButton }, () => {
-      this.submitTarget.click()
-    })
+    const submitButton = { title: submitElement.title }
+    const cancelButton = cancelElement ? { title: cancelElement.title } : null
+
+    this.send("connect", { submitButton, cancelButton }, message => this.receive(message))
+  }
+
+  receive(message) {
+    switch (message.event) {
+      case "submit":
+        this.submitTarget.click()
+        break
+      case "cancel":
+        this.cancelTarget.click()
+        break
+    }
   }
 
   notifyBridgeOfDisonnect() {
