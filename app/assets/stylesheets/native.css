@@ -6,6 +6,8 @@
     --custom-safe-inset-bottom: var(--injected-safe-inset-bottom, env(safe-area-inset-bottom, 0px));
     --custom-safe-inset-left: var(--injected-safe-inset-left, env(safe-area-inset-left, 0px));
 
+    --footer-height: 0;
+
     -webkit-tap-highlight-color: transparent;
 
     .hide-on-native {
