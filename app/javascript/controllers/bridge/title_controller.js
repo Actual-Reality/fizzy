@@ -3,7 +3,7 @@ import { viewport } from "helpers/bridge/viewport_helpers"
 import { nextFrame } from "helpers/timing_helpers"
 
 export default class extends BridgeComponent {
-  static component = "page"
+  static component = "title"
   static targets = [ "header" ]
   static values = { title: String }
 
@@ -18,18 +18,6 @@ export default class extends BridgeComponent {
     super.disconnect()
     this.stopObserver()
     window.removeEventListener("resize", this.windowResized)
-  }
-
-  receive(message) {
-    switch (message.event) {
-    case "set-text-size":
-      this.setTextSize(message.data)
-      break
-    }
-  }
-
-  setTextSize(data) {
-    document.documentElement.dataset.textSize = data.textSize
   }
 
   notifyBridgeOfVisibilityChange(visible) {
