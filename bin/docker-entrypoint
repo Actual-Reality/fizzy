@@ -3,11 +3,11 @@
 # If running the rails server then create or migrate existing database
 if [ "${1}" == "./bin/thrust" ] && [ "${2}" == "./bin/rails" ] && [ "${3}" == "server" ]; then
   if [ -z "${SKIP_DB_PREPARE}" ]; then
-    echo "Running database migrations..."
+    echo "Running database migrations and schema loads..."
     ./bin/rails db:prepare
-    ./bin/rails db:migrate:cable
-    ./bin/rails db:migrate:cache
-    ./bin/rails db:migrate:queue
+    ./bin/rails db:schema:load:cable
+    ./bin/rails db:schema:load:cache
+    ./bin/rails db:schema:load:queue
   fi
 fi
 
