@@ -23,12 +23,6 @@ module My::MenuHelper
     end
   end
 
-  def my_menu_project_item(project)
-    my_menu_item("clipboard", project) do
-      link_to(tag.span(project.name, class: "overflow-ellipsis"), project, class: "popup__btn btn")
-    end
-  end
-
   def my_menu_tag_item(the_tag)
     my_menu_item("tag", tag) do
       link_to(tag.span(class: "overflow-ellipsis") do

@@ -41,12 +41,3 @@
 
 /config/credentials/*.key
 .DS_Store
-
-# Terraform
-*.tfstate
-*.tfstate.backup
-*.tfvars
-.terraform/
-
-# Local scripts with secrets
-deploy.sh

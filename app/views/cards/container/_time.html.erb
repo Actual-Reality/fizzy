@@ -1,7 +1,7 @@
 <div id="<%= dom_id(card, :time_tracking) %>" class="flex flex-column gap-half position-relative"
      data-controller="dialog"
      data-action="keydown.esc->dialog#close click@document->dialog#closeOnClickOutside">
-  
+
   <% running_timer = card.time_entries.running.find_by(user: Current.user) %>
   <% total_mins = card.time_entries.sum(:duration) %>
 

@@ -40,7 +40,6 @@
   .icon--check-circle { --svg: url("check-circle.svg "); }
   .icon--check-all { --svg: url("check-all.svg "); }
   .icon--clipboard { --svg: url("clipboard.svg "); }
-  .icon--clock { --svg: url("clock.svg "); }
   .icon--close { --svg: url("close.svg "); }
   .icon--close-circle { --svg: url("close-circle.svg "); }
   .icon--collapse { --svg: url("collapse.svg "); }
@@ -88,7 +87,6 @@
   .icon--picture-remove { --svg: url("picture-remove.svg "); }
   .icon--picture-zoom { --svg: url("picture-zoom.svg "); }
   .icon--pinned { --svg: url("pinned.svg "); }
-  .icon--play { --svg: url("play.svg "); }
   .icon--qr-code { --svg: url("qr-code.svg "); }
   .icon--reaction { --svg: url("reaction.svg "); }
   .icon--refresh { --svg: url("refresh.svg "); }
@@ -99,7 +97,6 @@
   .icon--settings { --svg: url("settings.svg "); }
   .icon--share { --svg: url("share.svg "); }
   .icon--sliders { --svg: url("sliders.svg "); }
-  .icon--stop { --svg: url("stop.svg "); }
   .icon--sun { --svg: url("sun.svg "); }
   .icon--switch { --svg: url("switch.svg "); }
   .icon--tag { --svg: url("tag.svg "); }

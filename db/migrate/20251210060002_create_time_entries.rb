@@ -4,8 +4,9 @@ class CreateTimeEntries < ActiveRecord::Migration[8.2]
       t.references :card, null: false, foreign_key: true, type: :uuid
       t.references :user, null: false, foreign_key: true, type: :uuid
       t.integer :duration
-      t.date :started_at
-      t.string :description, null: false
+      t.datetime :started_at
+      t.datetime :ended_at
+      t.string :description
 
       t.timestamps
     end

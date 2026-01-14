@@ -2,9 +2,7 @@
 
 # If running the rails server then create or migrate existing database
 if [ "${1}" == "./bin/thrust" ] && [ "${2}" == "./bin/rails" ] && [ "${3}" == "server" ]; then
-  if [ -z "${SKIP_DB_PREPARE}" ]; then
-    MIGRATE=1 ./bin/rails db:prepare
-  fi
+  MIGRATE=1 ./bin/rails db:prepare
 fi
 
 exec "${@}"

@@ -63,7 +63,7 @@ class Cards::TimeEntriesController < ApplicationController
 
   private
     def set_card
-      @card = Current.account.cards.find_by!(number: params[:card_id])
+      @card = Current.account.cards.find(params[:card_id])
     end
 
     def time_entry_params

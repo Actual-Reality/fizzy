@@ -1,4 +1,4 @@
-<% total_mins = card.time_entries.sum { |entry| entry.duration || 0 } %>
+<% total_mins = card.time_entries.sum(&:duration) %>
 <% if total_mins > 0 %>
   <div class="card__meta-text card__meta-text--time txt-dim" title="Total time logged">
     <%= icon_tag "clock" %>

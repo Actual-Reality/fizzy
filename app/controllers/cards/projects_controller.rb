@@ -6,12 +6,12 @@ class Cards::ProjectsController < ApplicationController
 
   def update
     @card.update(project_params)
-    redirect_to @card
+    redirect_to @card, status: :see_other
   end
 
   private
     def set_card
-      @card = Current.account.cards.find_by!(number: params[:card_id])
+      @card = Current.account.cards.find(params[:card_id])
     end
 
     def project_params

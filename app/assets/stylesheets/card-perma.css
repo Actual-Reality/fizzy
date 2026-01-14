@@ -160,10 +160,9 @@
     display: grid;
     gap: var(--block-space-half);
 
-    &:has([open]),
-    &:has(dialog[open]) {
+    &:has([open]) {
       position: relative;
-      z-index: 100;
+      z-index: 1;
     }
 
     &:has([data-controller~="tooltip"]:hover) {

@@ -1,35 +1,5 @@
-<%= turbo_frame_tag "project_picker" do %>
-  <%= tag.div class: "max-width full-width", data: {
-        action: "turbo:before-cache@document->dialog#close dialog:show@document->navigable-list#reset keydown->navigable-list#navigate filter:changed->navigable-list#reset",
-        controller: "filter navigable-list",
-        dialog_target: "dialog",
-        navigable_list_focus_on_selection_value: false,
-        navigable_list_actionable_items_value: true } do %>
-    <strong class="popup__title pad-inline-half">Project…</strong>
-
-    <%= text_field_tag :search, nil, placeholder: "Filter…", class: "input input--transparent txt-small margin-block-half font-weight-normal", autofocus: true,
-          type: "search", autocorrect: "off", autocomplete: "off", data: { "1p-ignore": "true", filter_target: "input", action: "input->filter#filter" } %>
-
-    <ul class="popup__list margin-block-start-half margin-none-block-end" data-filter-target="list">
-      <li class="popup__item" data-filter-target="item" data-navigable-list-target="item" aria-checked="<%= @card.project_id.nil? %>">
-        <%= button_to card_project_path(@card, card: { project_id: nil }), method: :patch,
-              class: "popup__btn btn",
-              form_class: "max-width flex-item-grow" do %>
-          <span class="overflow-ellipsis flex-item-grow">No Project</span>
-          <%= icon_tag "check", size: 18, class: "checked flex-item-no-shrink flex-item-justify-end", style: "--icon-size: 1em" %>
-        <% end %>
-      </li>
-
-      <% Current.account.projects.order(:name).each do |project| %>
-        <li class="popup__item" data-filter-target="item" data-navigable-list-target="item" aria-checked="<%= @card.project == project %>">
-          <%= button_to card_project_path(@card, card: { project_id: project.id }), method: :patch,
-                class: "popup__btn btn",
-                form_class: "max-width flex-item-grow" do %>
-            <span class="overflow-ellipsis flex-item-grow"><%= project.name %></span>
-            <%= icon_tag "check", size: 18, class: "checked flex-item-no-shrink flex-item-justify-end", style: "--icon-size: 1em" %>
-          <% end %>
-        </li>
-      <% end %>
-    </ul>
-  <% end %>
+<%= form_with model: @card, url: card_project_path(@card), method: :patch, class: "flex-column gap-half" do |form| %>
+  <div class="field">
+    <%= form.collection_select :project_id, Current.account.projects.order(:name), :id, :name, { include_blank: "No Project" }, { class: "input full-width", onchange: "this.form.requestSubmit()" } %>
+  </div>
 <% end %>
