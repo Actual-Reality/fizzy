@@ -6,7 +6,16 @@
     <% end %>
   </li>
 
-  <% projects.each do |project| %>
+  <% projects.first(5).each do |project| %>
     <%= my_menu_project_item(project) %>
+  <% end %>
+
+  <% if projects.size > 5 %>
+    <li class="popup__item" data-filter-target="item" data-navigable-list-target="item">
+      <%= icon_tag "grid", class: "popup__icon" %>
+      <%= link_to projects_path, class: "popup__btn btn" do %>
+        <span class="overflow-ellipsis">All Projects…</span>
+      <% end %>
+    </li>
   <% end %>
 <% end %>

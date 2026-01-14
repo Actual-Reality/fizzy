@@ -1,44 +1,43 @@
 <% @page_title = "Report: #{@project.name}" %>
 
 <div class="header">
-  <div class="header__title">
-    <h1>Report: <%= @project.name %></h1>
-    <div class="txt-dim txt-small">Total Time: <%= TimeEntry.format_duration(@total_duration) %></div>
+  <div class="header__actions header__actions--start">
+    <%= link_to "Back to Projects", projects_path, class: "btn btn--small" %>
   </div>
-  <div class="header__actions">
-    <%= link_to "Back to Projects", projects_path, class: "btn" %>
+
+  <div class="header__title">
+    <h1 class="margin-none">Report: <%= @project.name %></h1>
+    <div class="txt-dim txt-small font-weight-normal">Total Time: <%= TimeEntry.format_duration(@total_duration) %></div>
+  </div>
+
+  <div class="header__actions header__actions--end">
+    <%= link_to "Export CSV", report_project_path(@project, format: :csv), class: "btn btn--small" %>
   </div>
 </div>
 
-<div class="panel">
-  <table class="table">
-    <thead>
-      <tr>
-        <th>User</th>
-        <th>Total Time</th>
-        <th>Cards Worked On</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @entries_by_user.each do |user, entries| %>
-        <% user_total = entries.sum(&:duration) %>
-        <tr>
-          <td>
-            <div class="flex align-center gap-half">
-              <%= avatar_tag user %>
-              <strong><%= user.name %></strong>
-            </div>
-          </td>
-          <td><%= TimeEntry.format_duration(user_total) %></td>
-          <td>
-            <div class="flex flex-wrap gap-half">
-              <% entries.map(&:card).uniq.each do |card| %>
-                <%= link_to card.title, card, class: "badge badge--gray" %>
-              <% end %>
-            </div>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+<div class="cards--grid margin-block-start">
+  <% @entries_by_user.each do |user, entries| %>
+    <% user_total = entries.sum(&:duration) %>
+    <div class="card" style="--card-color: var(--color-ink-medium)">
+      <header class="card__header">
+        <div class="card__board flex align-center gap-half">
+          <%= avatar_tag user, size: 24 %>
+          <span class="txt-bold"><%= user.name %></span>
+        </div>
+        <div class="txt-medium txt-subtle flex-item-justify-end">
+          <%= TimeEntry.format_duration(user_total) %>
+        </div>
+      </header>
+
+      <div class="card__body">
+        <div class="card__content">
+          <div class="flex flex-wrap gap-half">
+            <% entries.map(&:card).uniq.each do |card| %>
+              <%= link_to card.title, card, class: "badge badge--gray" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
 </div>

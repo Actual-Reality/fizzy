@@ -8,7 +8,9 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    set_page_and_extract_portion_from @project.cards.latest
+    @open_cards_count = @project.cards.open.count
+    @closed_cards_count = @project.cards.closed.count
+    @total_duration = @project.time_entries.sum(:duration)
   end
 
   def new
@@ -44,9 +46,39 @@ class ProjectsController < ApplicationController
   def report
     @entries_by_user = @project.time_entries.includes(:user, :card).group_by(&:user)
     @total_duration = @project.time_entries.sum(:duration)
+
+    respond_to do |format|
+      format.html
+      format.csv do
+        csv_data = "\uFEFF" + generate_csv(@project.time_entries.includes(:user, card: :board).order(started_at: :desc))
+        send_data csv_data,
+          filename: "#{@project.name.parameterize}-time-report-#{Time.zone.today}.csv"
+      end
+    end
   end
 
   private
+    def generate_csv(entries)
+      require "csv"
+
+      CSV.generate(headers: true) do |csv|
+        csv << [ "Date", "User", "Card ID", "Card Title", "Board", "Description", "Duration (Minutes)", "Duration (Formatted)" ]
+
+        entries.each do |entry|
+          csv << [
+            entry.started_at&.to_date,
+            entry.user&.name,
+            entry.card&.number,
+            entry.card&.title,
+            entry.card&.board&.name,
+            entry.description,
+            entry.duration,
+            TimeEntry.format_duration(entry.duration)
+          ]
+        end
+      end
+    end
+
     def set_project
       @project = Current.account.projects.find(params[:id])
     end
