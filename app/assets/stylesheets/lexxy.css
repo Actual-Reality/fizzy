@@ -127,6 +127,11 @@
   /* Toolbar
   /* ------------------------------------------------------------------------ */
 
+  /* TODO: Temporary - hide table button while we work on the styles */
+  button[name="table"] {
+    display: none;
+  }
+
   lexxy-toolbar {
     --lexxy-toolbar-icon-size: 1em;
 
