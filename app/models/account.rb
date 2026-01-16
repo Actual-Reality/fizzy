@@ -4,6 +4,7 @@ class Account < ApplicationRecord
   has_one :join_code
   has_many :users, dependent: :destroy
   has_many :boards, dependent: :destroy
+  has_many :projects, dependent: :destroy
   has_many :cards, dependent: :destroy
   has_many :webhooks, dependent: :destroy
   has_many :tags, dependent: :destroy
