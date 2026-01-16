@@ -42,6 +42,7 @@ class TimeEntry < ApplicationRecord
     self.ended_at = Time.current
     self.duration = ((ended_at - started_at) / 60).to_i # Calculate duration in minutes
     self.duration = 1 if self.duration < 1 # Ensure at least 1 minute
+    self.description = "Working on task" if description.blank?
     save!
   end
 

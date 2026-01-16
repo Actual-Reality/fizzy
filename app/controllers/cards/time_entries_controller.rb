@@ -8,7 +8,7 @@ class Cards::TimeEntriesController < ApplicationController
     if @time_entry.save
       redirect_to @card, notice: "Time entry added.", status: :see_other
     else
-      redirect_to @card, alert: "Failed to add time entry. #{@time_entry.errors.full_messages.to_sentence}", status: :unprocessable_entity
+      redirect_to @card, alert: "Failed to add time entry. #{@time_entry.errors.full_messages.to_sentence}", status: :see_other
     end
   end
 
@@ -21,7 +21,7 @@ class Cards::TimeEntriesController < ApplicationController
     if @time_entry.save
       redirect_to @card, notice: "Timer started.", status: :see_other
     else
-      redirect_to @card, alert: "Failed to start timer.", status: :unprocessable_entity
+      redirect_to @card, alert: "Failed to start timer.", status: :see_other
     end
   end
 
@@ -31,7 +31,7 @@ class Cards::TimeEntriesController < ApplicationController
     if @time_entry&.stop!
       redirect_to @card, notice: "Timer stopped. Duration: #{@time_entry.duration_string}", status: :see_other
     else
-      redirect_to @card, alert: "No running timer found or failed to stop.", status: :unprocessable_entity
+      redirect_to @card, alert: "No running timer found or failed to stop.", status: :see_other
     end
   end
 
@@ -46,7 +46,7 @@ class Cards::TimeEntriesController < ApplicationController
     if @time_entry.update(time_entry_params)
       redirect_to @card, status: :see_other
     else
-      redirect_to @card, alert: "Failed to update time entry.", status: :unprocessable_entity
+      redirect_to @card, alert: "Failed to update time entry.", status: :see_other
     end
   end
 

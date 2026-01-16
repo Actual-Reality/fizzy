@@ -8,7 +8,7 @@
   <div class="flex flex-column gap-half">
     <% if running_timer %>
       <div class="position-relative">
-        <%= button_to stop_card_time_entries_path(card), class: "btn btn--reversed btn--circle-mobile", title: "Stop Timer", data: { controller: "tooltip", turbo_method: :post } do %>
+        <%= button_to stop_card_time_entries_path(card), class: "btn btn--reversed btn--circle-mobile", title: "Stop Timer", data: { controller: "tooltip" } do %>
           <%= icon_tag "stop" %>
           <span class="for-screen-reader">Stop Timer</span>
         <% end %>
@@ -17,7 +17,7 @@
         </div>
       </div>
     <% else %>
-      <%= button_to start_card_time_entries_path(card), class: "btn btn--circle-mobile", title: "Start Timer", data: { controller: "tooltip", turbo_method: :post } do %>
+      <%= button_to start_card_time_entries_path(card), class: "btn btn--circle-mobile", title: "Start Timer", data: { controller: "tooltip" } do %>
         <%= icon_tag "play" %>
         <span class="for-screen-reader">Start Timer</span>
       <% end %>
