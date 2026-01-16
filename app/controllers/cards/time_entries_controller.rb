@@ -16,7 +16,7 @@ class Cards::TimeEntriesController < ApplicationController
     # Stop any other running timers for this user
     Current.user.time_entries.running.find_each(&:stop!)
 
-    @time_entry = @card.time_entries.new(started_at: Time.current, user: Current.user, description: "Working on task")
+    @time_entry = @card.time_entries.new(started_at: Time.current, user: Current.user)
 
     if @time_entry.save
       redirect_to @card, notice: "Timer started.", status: :see_other
@@ -67,6 +67,6 @@ class Cards::TimeEntriesController < ApplicationController
     end
 
     def time_entry_params
-      params.expect(time_entry: [ :duration_string, :started_at, :description ])
+      params.expect(time_entry: [ :duration_string, :started_at ])
     end
 end

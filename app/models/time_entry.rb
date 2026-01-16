@@ -4,7 +4,6 @@ class TimeEntry < ApplicationRecord
 
   validates :duration, presence: true, numericality: { greater_than: 0 }, unless: :running?
   validates :started_at, presence: true
-  validates :description, presence: true, on: :update, unless: :running?
 
   scope :running, -> { where(ended_at: nil, duration: nil) }
   scope :completed, -> { where.not(duration: nil) }
@@ -42,7 +41,6 @@ class TimeEntry < ApplicationRecord
     self.ended_at = Time.current
     self.duration = ((ended_at - started_at) / 60).to_i # Calculate duration in minutes
     self.duration = 1 if self.duration < 1 # Ensure at least 1 minute
-    self.description = "Working on task" if description.blank?
     save!
   end
 

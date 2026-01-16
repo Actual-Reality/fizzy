@@ -30,8 +30,8 @@
   </div>
 
   <dialog class="popup panel fill-white shadow padding flex-column gap" data-dialog-target="dialog" style="position: absolute; min-width: 320px; left: 100%; top: 0; margin-left: 10px; z-index: 9999;">
-    <button class="btn btn--icon btn--small txt-dim hover-txt-ink position-absolute" data-action="click->dialog#close" style="top: 0.5rem; right: 0.5rem;">
-      <%= icon_tag "close", size: 16 %>
+    <button class="btn btn--circle txt-x-small borderless position-absolute" data-action="click->dialog#close" style="top: 0.5rem; right: 0.5rem;">
+      <%= icon_tag "close" %>
     </button>
 
     <div class="flex flex-column">
@@ -43,7 +43,7 @@
 
     <% if running_timer %>
       <div class="bg-highlight-faint padding-half border-radius margin-block-end">
-        <div class="flex align-center justify-between margin-block-end-half" data-controller="timer" data-timer-start-time-value="<%= running_timer.started_at.iso8601 %>">
+        <div class="flex align-center justify-between" data-controller="timer" data-timer-start-time-value="<%= running_timer.started_at.iso8601 %>">
           <div class="flex align-center gap-half">
             <span class="steps__icon txt-highlight"><%= icon_tag "clock", size: 16 %></span>
             <div class="flex flex-column">
@@ -55,10 +55,6 @@
             Stop
           <% end %>
         </div>
-
-        <%= form_with model: [card, running_timer], class: "width-full", data: { controller: "form", action: "input->form#debouncedSubmit" } do |form| %>
-          <%= form.text_field :description, class: "input input--small full-width", placeholder: "What are you working on?" %>
-        <% end %>
       </div>
     <% end %>
 
@@ -66,15 +62,8 @@
       <% if card.time_entries.completed.any? %>
         <% card.time_entries.completed.includes(:user).order(started_at: :desc).each do |entry| %>
           <div class="time-entry flex align-center justify-between txt-small padding-block-half border-bottom border-color-light">
-            <div class="flex align-center gap-half">
-              <%= avatar_image_tag entry.user, size: 20 %>
-              <div class="flex flex-column">
-                <span class="txt-bold"><%= entry.user.name %></span>
-                <span class="txt-dim txt-tiny"><%= local_datetime_tag(entry.started_at, style: :date) %></span>
-                <% if entry.description.present? %>
-                  <span class="txt-dim txt-tiny overflow-ellipsis" style="max-width: 150px;"><%= entry.description %></span>
-                <% end %>
-              </div>
+            <div class="flex flex-column">
+              <span class="txt-dim txt-tiny"><%= local_datetime_tag(entry.started_at, style: :date) %></span>
             </div>
             <div class="flex align-center gap-half">
               <span class="tabular-nums txt-bold"><%= entry.duration_string %></span>
@@ -100,11 +89,6 @@
         <div class="field">
           <%= form.label :duration_string, "Duration", class: "label txt-tiny txt-bold" %>
           <%= form.text_field :duration_string, placeholder: "Duration (e.g. 1h)", class: "input input--small full-width" %>
-        </div>
-
-        <div class="field">
-          <%= form.label :description, "Description", class: "label txt-tiny txt-bold" %>
-          <%= form.text_field :description, placeholder: "What did you do?", class: "input input--small full-width" %>
         </div>
 
         <%= form.submit "Log Time", class: "btn btn--small btn--reversed full-width" %>
