@@ -1,11 +1,5 @@
 <section id="<%= dom_id(card, :card_container) %>" class="card-perma" style="--card-color: <%= card.color %>;">
   <% cache card do %>
-    <div class="card-perma__actions card-perma__actions--left">
-      <%= render "cards/container/gild", card: card if card.published? && !card.closed? %>
-      <%= render "cards/container/image", card: card %>
-      <%= render "cards/container/time", card: card %>
-    </div>
-
     <div class="card-perma__bg">
       <%= card_article_tag card, class: "card" do %>
         <header class="card__header">
@@ -34,6 +28,12 @@
       <% if card.entropic? %>
         <%= render "cards/display/preview/bubble", card: card %>
       <% end %>
+    </div>
+
+    <div class="card-perma__actions card-perma__actions--left">
+      <%= render "cards/container/gild", card: card if card.published? && !card.closed? %>
+      <%= render "cards/container/image", card: card %>
+      <%= render "cards/container/time", card: card %>
     </div>
   <% end %>
 
