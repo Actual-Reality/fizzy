@@ -109,7 +109,7 @@
     text-transform: uppercase;
   }
 
-  .card__board-picker-btn {
+  .card__board-picker-button {
     inset: 0;
     position: absolute;
   }
