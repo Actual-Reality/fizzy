@@ -7,27 +7,38 @@
   </div>
 </div>
 
-<div class="panel">
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @projects.each do |project| %>
-        <tr>
-          <td><%= project.name %></td>
-          <td><%= truncate(project.description, length: 100) %></td>
-          <td>
-            <%= link_to "Report", report_project_path(project), class: "btn btn--small" %>
-            <%= link_to "Edit", edit_project_path(project), class: "btn btn--small" %>
-            <%= link_to "Delete", project_path(project), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn--small btn--danger" %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
+<% if @projects.any? %>
+  <div class="cards--grid margin-block-start">
+    <% @projects.each do |project| %>
+      <div class="card" style="--card-color: var(--color-ink-medium)">
+        <header class="card__header">
+          <div class="card__board">
+            <%= link_to project.name, project_path(project), class: "txt-reversed txt-undecorated" %>
+          </div>
+        </header>
+
+        <div class="card__body">
+          <div class="card__content">
+            <div class="txt-medium txt-tight-lines overflow-line-clamp" style="--lines: 4">
+              <%= truncate(project.description, length: 100) %>
+            </div>
+          </div>
+        </div>
+
+        <footer class="margin-block-start-auto pad-block-end flex justify-end gap-half" style="z-index: 2">
+          <%= link_to "Report", report_project_path(project), class: "btn btn--small" %>
+          <%= link_to "Edit", edit_project_path(project), class: "btn btn--small" %>
+          <%= link_to "Delete", project_path(project), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn--small btn--danger" %>
+        </footer>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="blank-slate center txt-center">
+    <div class="blank-slate__content">
+      <h2 class="txt-large margin-block-end">No projects yet</h2>
+      <p class="txt-medium margin-block-end">Get started by creating your first project.</p>
+      <%= link_to "Create a Project", new_project_path, class: "btn btn--primary" %>
+    </div>
+  </div>
+<% end %>
