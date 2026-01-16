@@ -29,15 +29,11 @@
     </button>
   </div>
 
-  <dialog class="popup panel fill-white shadow padding flex-column gap" data-dialog-target="dialog" style="position: absolute; min-width: 320px; left: 100%; top: 0; margin-left: 10px; z-index: 9999;">
-    <button class="btn btn--circle txt-x-small borderless position-absolute" data-action="click->dialog#close" style="top: 0.5rem; right: 0.5rem;">
-      <%= icon_tag "close" %>
-    </button>
-
-    <div class="flex flex-column">
-      <h4 class="txt-small txt-bold margin-none">Time Tracking</h4>
+  <dialog class="popup panel fill-white shadow padding flex-column gap" data-dialog-target="dialog" style="position: absolute; min-width: 300px; left: 100%; top: 0; margin-left: var(--block-space-half);">
+    <div class="flex align-center justify-between">
+      <h4 class="popup__title margin-none">Time Tracking</h4>
       <% if total_mins > 0 %>
-        <span class="txt-tiny txt-dim"><%= TimeEntry.format_duration(total_mins) %> total logged</span>
+        <span class="txt-tiny txt-dim"><%= TimeEntry.format_duration(total_mins) %></span>
       <% end %>
     </div>
 
