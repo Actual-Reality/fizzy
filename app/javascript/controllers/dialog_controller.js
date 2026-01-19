@@ -11,9 +11,12 @@ export default class extends Controller {
   }
 
   connect() {
-    this.#setupFocus()
     this.dialogTarget.setAttribute("aria-hidden", "true")
     if (this.autoOpenValue) this.open()
+  }
+
+  focusTouchTargetConnected() {
+    this.#setupFocus()
   }
 
   open() {
