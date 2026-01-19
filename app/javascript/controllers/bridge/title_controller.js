@@ -10,54 +10,54 @@ export default class extends BridgeComponent {
   async connect() {
     super.connect()
     await nextFrame()
-    this.startObserver()
-    window.addEventListener("resize", this.windowResized)
+    this.#startObserver()
+    window.addEventListener("resize", this.#windowResized)
   }
 
   disconnect() {
     super.disconnect()
-    this.stopObserver()
-    window.removeEventListener("resize", this.windowResized)
+    this.#stopObserver()
+    window.removeEventListener("resize", this.#windowResized)
   }
 
   notifyBridgeOfVisibilityChange(visible) {
-    this.send("visibility", { title: this.title, elementVisible: visible })
+    this.send("visibility", { title: this.#title, elementVisible: visible })
   }
 
   // Intersection Observer
 
-  startObserver() {
+  #startObserver() {
     if (!this.hasHeaderTarget) return
 
     this.observer = new IntersectionObserver(([ entry ]) =>
       this.notifyBridgeOfVisibilityChange(entry.isIntersecting),
-      { rootMargin: `-${this.topOffset}px 0px 0px 0px` }
+      { rootMargin: `-${this.#topOffset}px 0px 0px 0px` }
     )
 
     this.observer.observe(this.headerTarget)
-    this.previousTopOffset = this.topOffset
+    this.previousTopOffset = this.#topOffset
   }
 
-  stopObserver() {
+  #stopObserver() {
     this.observer?.disconnect()
   }
 
-  updateObserverIfNeeded() {
-    if (this.topOffset === this.previousTopOffset) return
+  #updateObserverIfNeeded() {
+    if (this.#topOffset === this.previousTopOffset) return
 
-    this.stopObserver()
-    this.startObserver()
+    this.#stopObserver()
+    this.#startObserver()
   }
 
-  windowResized = () => {
-    this.updateObserverIfNeeded()
+  #windowResized = () => {
+    this.#updateObserverIfNeeded()
   }
 
-  get title() {
+  get #title() {
     return this.titleValue ? this.titleValue : document.title
   }
 
-  get topOffset() {
+  get #topOffset() {
     return viewport.top
   }
 }

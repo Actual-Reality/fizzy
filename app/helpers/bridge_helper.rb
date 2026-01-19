@@ -1,5 +1,5 @@
 module BridgeHelper
-  def bridge_icon(name, extension = "svg")
-    asset_url("#{name}.#{extension}")
+  def bridge_icon(name)
+    asset_url("#{name}.svg")
   end
 end

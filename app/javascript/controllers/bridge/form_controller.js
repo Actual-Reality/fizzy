@@ -8,7 +8,7 @@ export default class extends BridgeComponent {
 
   submitTargetConnected() {
     this.notifyBridgeOfConnect()
-    this.observeSubmitTarget()
+    this.#observeSubmitTarget()
   }
 
   submitTargetDisconnected() {
@@ -41,7 +41,15 @@ export default class extends BridgeComponent {
     this.send("disconnect")
   }
 
-  observeSubmitTarget() {
+  submitStart() {
+    this.send("submitStart")
+  }
+
+  submitEnd() {
+    this.send("submitEnd")
+  }
+
+  #observeSubmitTarget() {
     this.submitObserver = new MutationObserver(() => {
       this.send(this.submitTarget.disabled ? "submitDisabled" : "submitEnabled")
     })
@@ -50,13 +58,5 @@ export default class extends BridgeComponent {
       attributes: true,
       attributeFilter: [ "disabled" ]
     })
-  }
-
-  submitStart() {
-    this.send("submitStart")
-  }
-
-  submitEnd() {
-    this.send("submitEnd")
   }
 }

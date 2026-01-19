@@ -17,11 +17,11 @@ export default class extends BridgeComponent {
 
   notifyBridgeOfConnect() {
     this.send("connect", {}, message => {
-      this.setInsets(message.data)
+      this.#setInsets(message.data)
     })
   }
 
-  setInsets({ top, right, bottom, left }) {
+  #setInsets({ top, right, bottom, left }) {
     const root = document.documentElement.style
     root.setProperty("--injected-safe-inset-top", `${top}px`)
     root.setProperty("--injected-safe-inset-right", `${right}px`)
