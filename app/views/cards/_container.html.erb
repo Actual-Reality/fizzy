@@ -1,4 +1,4 @@
-<section id="<%= dom_id(card, :card_container) %>" class="card-perma" style="--card-color: <%= card.color %>;">
+<section id="<%= dom_id(card, :card_container) %>" class="card-perma" style="--card-color: <%= card.color %>;" data-controller="dialog-manager bridge--form">
   <% cache card do %>
     <div class="card-perma__bg">
       <%= card_article_tag card, class: "card" do %>
@@ -39,11 +39,5 @@
 
   <% if card.published? %>
     <%= render "cards/container/footer/published", card: card %>
-  <% elsif card.drafted? %>
-    <% if Fizzy.saas? %>
-      <%= render "cards/container/footer/saas/create", card: card %>
-    <% else %>
-      <%= render "cards/container/footer/create", card: card %>
-    <% end %>
   <% end %>
 </section>

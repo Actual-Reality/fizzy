@@ -21,7 +21,7 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
     end
 
     card = Card.last
-    assert_redirected_to card
+    assert_redirected_to card_draft_path(card)
 
     assert card.drafted?
   end
@@ -31,8 +31,15 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
 
     assert_no_difference -> { Card.count } do
       post board_cards_path(boards(:writebook))
-      assert_redirected_to draft
+      assert_redirected_to card_draft_path(draft)
     end
+  end
+
+  test "show redirects to draft when card is drafted" do
+    card = boards(:writebook).cards.create!(creator: users(:kevin), status: :drafted)
+
+    get card_path(card)
+    assert_redirected_to card_draft_path(card)
   end
 
   test "show" do
@@ -42,6 +49,16 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
 
   test "edit" do
     get edit_card_path(cards(:logo))
+    assert_response :success
+  end
+
+  test "edit card with invalid attachments in description" do
+    card = cards(:logo)
+    card.update! description: <<~HTML
+      <action-text-attachment sgid="gid://fizzy/Card/nonexistent" content-type="application/octet-stream"></action-text-attachment>
+    HTML
+
+    get edit_card_path(card)
     assert_response :success
   end
 

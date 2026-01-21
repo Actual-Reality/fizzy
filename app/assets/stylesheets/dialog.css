@@ -35,4 +35,9 @@
       }
     }
   }
+
+  /* Ensure padding from viewport edges */
+  .dialog.panel {
+    max-inline-size: calc(100vw - var(--inline-space-double) * 2);
+  }
 }
