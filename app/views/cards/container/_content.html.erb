@@ -20,6 +20,12 @@
       <% end %>
     </h1>
 
+    <% if Current.account.projects.any? %>
+      <div class="card__project-select margin-block-half">
+        <%= form.collection_select :project_id, Current.account.projects.order(:name), :id, :name, { include_blank: "No Project", selected: card.project_id }, { class: "input txt-small" } %>
+      </div>
+    <% end %>
+
     <%= form.rich_textarea :description, class: "card__description rich-text-content",
           placeholder: "Add some notes, context, pictures, or video about this…",
           data: { action: "lexxy:change->auto-save#change focusout->auto-save#submit" } do %>
