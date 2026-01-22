@@ -29,11 +29,14 @@
     </button>
   </div>
 
-  <dialog class="popup panel fill-white shadow padding flex-column gap" data-dialog-target="dialog" style="position: absolute; min-width: 300px; left: 100%; top: 0; margin-left: var(--block-space-half);">
-    <div class="flex align-center justify-between">
-      <h4 class="popup__title margin-none">Time Tracking</h4>
+  <dialog class="popup panel fill-white shadow padding flex-column gap" data-dialog-target="dialog" style="position: absolute; min-width: 320px; left: 100%; top: 0; margin-left: var(--block-space-half);">
+    <div class="flex align-center justify-between gap">
+      <div class="flex align-center gap-half">
+        <%= icon_tag "clock", size: 18, class: "txt-dim" %>
+        <h4 class="popup__title margin-none">Time Tracking</h4>
+      </div>
       <% if total_mins > 0 %>
-        <span class="txt-tiny txt-dim"><%= TimeEntry.format_duration(total_mins) %></span>
+        <span class="txt-small txt-bold tabular-nums txt-ink"><%= TimeEntry.format_duration(total_mins) %></span>
       <% end %>
     </div>
 
@@ -54,29 +57,47 @@
       </div>
     <% end %>
 
-    <div class="time-entries margin-block-end" style="max-height: 250px; overflow-y: auto;">
+    <div class="time-entries margin-block-end" style="max-height: 280px; overflow-y: auto;">
       <% if card.time_entries.completed.any? %>
-        <% card.time_entries.completed.includes(:user).order(started_at: :desc).each do |entry| %>
-          <div class="time-entry flex align-center justify-between txt-small padding-block-half border-bottom border-color-light">
-            <div class="flex flex-column">
-              <span class="txt-dim txt-tiny"><%= local_datetime_tag(entry.started_at, style: :datetime) %></span>
-            </div>
-            <div class="flex align-center gap-half">
-              <span class="tabular-nums txt-bold"><%= entry.duration_string %></span>
+        <div class="flex flex-column gap-half">
+          <% card.time_entries.completed.includes(:user).order(started_at: :desc).each do |entry| %>
+            <div class="time-entry flex align-center gap padding-half border-radius" style="transition: background-color 150ms ease-out;">
+              <div class="avatar txt-x-small flex-item-no-shrink">
+                <%= avatar_image_tag(entry.user) %>
+              </div>
+              <div class="flex flex-column min-width flex-1">
+                <div class="flex align-center justify-between gap">
+                  <span class="txt-dim txt-tiny"><%= local_datetime_tag(entry.started_at, style: :datetime) %></span>
+                  <span class="tabular-nums txt-bold txt-small txt-ink"><%= entry.duration_string %></span>
+                </div>
+                <span class="txt-dim txt-xx-small"><%= entry.user.familiar_name %></span>
+              </div>
               <% if entry.user == Current.user || Current.user.admin? %>
-                <%= link_to icon_tag("trash", size: 14), card_time_entry_path(card, entry), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn--icon txt-dim hover-txt-danger" %>
+                <%= link_to icon_tag("trash", size: 14), card_time_entry_path(card, entry), 
+                    data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, 
+                    class: "btn--icon txt-dim hover-txt-danger flex-item-no-shrink",
+                    title: "Delete time entry" %>
               <% end %>
             </div>
-          </div>
-        <% end %>
+          <% end %>
+        </div>
       <% else %>
-        <p class="txt-dim txt-small">No past logs.</p>
+        <div class="txt-center padding-block-double">
+          <div class="txt-dim">
+            <%= icon_tag "clock", size: 32, class: "margin-block-end-half" %>
+            <p class="txt-small margin-none">No time logged yet</p>
+            <p class="txt-tiny margin-block-start-half">Start a timer or log time manually</p>
+          </div>
+        </div>
       <% end %>
     </div>
 
-    <div class="bg-subtle padding-half border-radius">
-      <h5 class="txt-tiny txt-bold margin-block-end-half uppercase translucent">Log Time manually</h5>
-      <%= form_with model: [card, card.time_entries.new], class: "flex flex-column gap-half" do |form| %>
+    <div class="bg-subtle padding border-radius border-top">
+      <div class="flex align-center gap-half margin-block-end">
+        <%= icon_tag "plus", size: 14, class: "txt-dim" %>
+        <h5 class="txt-tiny txt-bold margin-none uppercase translucent">Log Time manually</h5>
+      </div>
+      <%= form_with model: [card, card.time_entries.new], class: "flex flex-column gap" do |form| %>
         <div class="field">
           <%= form.label :started_at, "Started At", class: "label txt-tiny txt-bold" %>
           <%= form.datetime_field :started_at, value: Time.current.strftime("%Y-%m-%dT%H:%M"), class: "input input--small full-width" %>
@@ -87,7 +108,7 @@
           <%= form.text_field :duration_string, placeholder: "Duration (e.g. 1h)", class: "input input--small full-width" %>
         </div>
 
-        <%= form.submit "Log Time", class: "btn btn--small btn--reversed full-width" %>
+        <%= form.submit "Log Time", class: "btn btn--small btn--reversed full-width margin-block-start-half" %>
       <% end %>
     </div>
   </dialog>
