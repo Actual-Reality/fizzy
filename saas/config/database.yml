@@ -19,7 +19,10 @@ default: &default
   adapter: trilogy
   host: <%= ENV.fetch "FIZZY_DB_HOST", "127.0.0.1" %>
   port: <%= ENV.fetch "FIZZY_DB_PORT", 3306 %>
-  pool: 50
+  # Pool size: threads per worker (1) + buffer (4) = 5 per process
+  # Configurable via DB_POOL_SIZE. With 8 workers: 8 × 5 = 40 connections per database
+  # Railway MySQL typically has max_connections ~100-200, so this keeps us well within limits
+  pool: <%= Integer(ENV.fetch("DB_POOL_SIZE") { 5 }) %>
   timeout: 5000
   variables:
     transaction_isolation: READ-COMMITTED

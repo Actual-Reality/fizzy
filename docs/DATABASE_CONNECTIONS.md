@@ -24,10 +24,12 @@ The queue database connection pool is set to **5 connections per process** by de
 
 ### Primary Database Pool
 
-The primary database pool is set to **50 connections per process**:
+The primary database pool is set to **5 connections per process** by default:
 - Handles web requests from users
 - Each Puma worker process has its own pool
-- With 8 CPU cores: 50 × 8 = 400 connections (if all workers are active)
+- With 8 CPU cores: 5 × 8 = 40 connections (vs previous 50 × 8 = 400)
+- Configurable via `DB_POOL_SIZE` environment variable
+- Formula: threads per worker (1) + buffer (4) = 5 per process
 
 ## MySQL max_connections Configuration
 
@@ -56,10 +58,25 @@ SHOW PROCESSLIST;
 
 ## Railway/Cloud Provider Configuration
 
-If you're using Railway or another cloud provider, you may need to:
+**Railway MySQL Connection Limits:**
+- Starter plans: ~100-150 max_connections
+- Pro plans: ~200-500 max_connections
+- Enterprise: Custom limits
+
+**Connection Calculation for Railway:**
+With default configuration (8 workers, 1 thread each, 5 pool size):
+- Primary: 8 × 5 = 40 connections
+- Cable: 8 × 5 = 40 connections
+- Cache: 8 × 5 = 40 connections
+- Queue: 8 × 5 = 40 connections
+- **Total: ~160 connections** (well within Railway's limits)
+
+If you're using Railway or another cloud provider:
 1. Check your MySQL plan's connection limits
-2. Upgrade your plan if needed
-3. Set `max_connections` via your provider's configuration or SQL
+2. Calculate total connections needed: `(workers × pool_size) × number_of_databases`
+3. Reduce `DB_POOL_SIZE` if needed (minimum: 2-3)
+4. Reduce `WEB_CONCURRENCY` if you have many workers
+5. Upgrade your plan if you need more connections
 
 ## Troubleshooting
 
@@ -91,6 +108,32 @@ The `solid_queue_graceful_shutdown.rb` initializer handles this by:
 
 ## Environment Variables
 
+- `DB_POOL_SIZE`: Primary/Cable/Cache database pool size per process (default: 5)
 - `SOLID_QUEUE_POOL_SIZE`: Queue database pool size per process (default: 5)
 - `JOB_CONCURRENCY`: Number of SolidQueue worker processes (default: CPU count)
 - `WEB_CONCURRENCY`: Number of Puma worker processes (default: CPU count)
+
+## Quick Fix for "Too many connections" on Railway
+
+If you're hitting connection limits on Railway:
+
+1. **Reduce pool size:**
+   ```bash
+   DB_POOL_SIZE=3
+   SOLID_QUEUE_POOL_SIZE=3
+   ```
+
+2. **Reduce worker count:**
+   ```bash
+   WEB_CONCURRENCY=4  # Instead of default CPU count
+   JOB_CONCURRENCY=4
+   ```
+
+3. **Check your current usage:**
+   Connect to your Railway MySQL and run:
+   ```sql
+   SHOW STATUS LIKE 'Threads_connected';
+   SHOW VARIABLES LIKE 'max_connections';
+   ```
+
+4. **Upgrade your Railway plan** if you need more connections
