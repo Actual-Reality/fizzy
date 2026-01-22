@@ -37,6 +37,7 @@ production:
   queue:
     <<: *default
     database: <%= ENV.fetch("MYSQL_DATABASE", "fizzy_production") %>
+    pool: <%= Integer(ENV.fetch("SOLID_QUEUE_POOL_SIZE") { 20 }) %>
     migrations_paths: db/queue_migrate
   cache:
     <<: *default
