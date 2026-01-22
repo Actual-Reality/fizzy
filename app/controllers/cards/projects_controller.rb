@@ -11,7 +11,7 @@ class Cards::ProjectsController < ApplicationController
 
   private
     def set_card
-      @card = Current.account.cards.find(params[:card_id])
+      @card = Current.user.accessible_cards.find_by!(number: params[:card_id])
     end
 
     def project_params
