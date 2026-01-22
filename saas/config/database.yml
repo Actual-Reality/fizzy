@@ -49,6 +49,7 @@ development:
     <<: *default
     database: development_queue
     port: <%= ENV.fetch "FIZZY_DB_PORT", 33380 %>
+    pool: <%= Integer(ENV.fetch("SOLID_QUEUE_POOL_SIZE") { 15 }) %>
     migrations_paths: db/queue_migrate
   saas:
     <<: *default
@@ -104,6 +105,7 @@ production: &production
     host: <%= ENV["MYSQL_SOLID_QUEUE_HOST"] %>
     username: <%= mysql_app_user %>
     password: <%= mysql_app_password %>
+    pool: <%= Integer(ENV.fetch("SOLID_QUEUE_POOL_SIZE") { 20 }) %>
     migrations_paths: db/queue_migrate
   cache:
     <<: *default

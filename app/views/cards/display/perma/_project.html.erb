@@ -1,0 +1,16 @@
+<div class="card__project flex align-center gap-half">
+  <span class="txt-small txt-dim"><%= card.project&.name || "No Project" %></span>
+
+  <div class="align-self-center position-relative txt-small"
+      data-controller="dialog"
+      data-action="keydown.esc->dialog#close:stop click@document->dialog#closeOnClickOutside mouseenter->dialog#loadLazyFrames" <%= "hidden" if card.closed? %>>
+    <button class="project-picker__button btn btn--reversed card__hide-on-index fill-transparent" data-action="click->dialog#open:stop">
+      <%= icon_tag "caret-down" %>
+      <span class="for-screen-reader">Choose a project for this card</span>
+    </button>
+
+    <dialog class="popup panel flex-column align-start gap-half fill-white shadow margin-block-double" data-dialog-target="dialog" data-action="turbo:before-morph-attribute->dialog#preventCloseOnMorphing turbo:submit-end->dialog#close">
+      <%= turbo_frame_tag "project_picker", src: edit_card_project_path(card), target: "_top", loading: :lazy, refresh: "morph" %>
+    </dialog>
+  </div>
+</div>

@@ -1,0 +1,117 @@
+<div id="<%= dom_id(card, :time_tracking) %>" class="flex flex-column gap-half position-relative"
+     data-controller="dialog"
+     data-action="keydown.esc->dialog#close click@document->dialog#closeOnClickOutside">
+
+  <% running_timer = card.time_entries.running.find_by(user: Current.user) %>
+  <% total_mins = card.time_entries.sum(:duration) %>
+
+  <div class="flex flex-column gap-half">
+    <% if running_timer %>
+      <div class="position-relative">
+        <%= button_to stop_card_time_entries_path(card), class: "btn btn--reversed btn--circle-mobile", title: "Stop Timer", data: { controller: "tooltip" } do %>
+          <%= icon_tag "stop" %>
+          <span class="for-screen-reader">Stop Timer</span>
+        <% end %>
+        <div class="position-absolute" style="top: 0; right: 0; transform: translate(30%, -30%);">
+          <span class="badge badge--notification badge--pulsing" title="Timer Running"></span>
+        </div>
+      </div>
+    <% else %>
+      <%= button_to start_card_time_entries_path(card), class: "btn btn--circle-mobile", title: "Start Timer", data: { controller: "tooltip" } do %>
+        <%= icon_tag "play" %>
+        <span class="for-screen-reader">Start Timer</span>
+      <% end %>
+    <% end %>
+
+    <button class="btn btn--circle-mobile <%= 'btn--reversed' if total_mins > 0 %>" title="View History & Log Time (<%= TimeEntry.format_duration(total_mins) %> total)" data-action="click->dialog#open:stop" data-controller="tooltip">
+      <%= icon_tag "history" %>
+      <span class="for-screen-reader">History</span>
+    </button>
+  </div>
+
+  <dialog class="popup panel fill-white shadow padding flex-column gap" data-dialog-target="dialog" style="position: absolute; min-width: 320px; left: 100%; top: 0; margin-left: var(--block-space-half);">
+    <div class="flex align-center justify-between gap">
+      <div class="flex align-center gap-half">
+        <%= icon_tag "clock", size: 18, class: "txt-dim" %>
+        <h4 class="popup__title margin-none">Time Tracking</h4>
+      </div>
+      <% if total_mins > 0 %>
+        <span class="txt-small txt-bold tabular-nums txt-ink"><%= TimeEntry.format_duration(total_mins) %></span>
+      <% end %>
+    </div>
+
+    <% if running_timer %>
+      <div class="bg-highlight-faint padding-half border-radius margin-block-end">
+        <div class="flex align-center justify-between" data-controller="timer" data-timer-start-time-value="<%= running_timer.started_at.iso8601 %>">
+          <div class="flex align-center gap-half">
+            <span class="steps__icon txt-highlight"><%= icon_tag "clock", size: 16 %></span>
+            <div class="flex flex-column">
+              <span class="txt-tiny txt-bold txt-highlight">Running</span>
+              <span class="txt-medium txt-bold tabular-nums txt-highlight" data-timer-target="output">0m 0s</span>
+            </div>
+          </div>
+          <%= link_to stop_card_time_entries_path(card), class: "btn btn--small btn--primary", data: { turbo_method: :post } do %>
+            Stop
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="time-entries margin-block-end" style="max-height: 280px; overflow-y: auto;">
+      <% if card.time_entries.completed.any? %>
+        <div class="flex flex-column gap-half">
+          <% card.time_entries.completed.includes(:user).order(started_at: :desc).each do |entry| %>
+            <div class="time-entry flex align-center gap padding-half border-radius" style="transition: background-color 150ms ease-out;">
+              <div class="avatar txt-x-small flex-item-no-shrink">
+                <%= avatar_image_tag(entry.user) %>
+              </div>
+              <div class="flex flex-column min-width flex-1">
+                <div class="flex align-center justify-between gap">
+                  <span class="txt-dim txt-tiny"><%= local_datetime_tag(entry.started_at, style: :datetime) %></span>
+                  <span class="tabular-nums txt-bold txt-small txt-ink"><%= entry.duration_string %></span>
+                </div>
+                <span class="txt-dim txt-xx-small"><%= entry.user.familiar_name %></span>
+              </div>
+              <% if entry.user == Current.user || Current.user.admin? %>
+                <%= link_to icon_tag("trash", size: 14), card_time_entry_path(card, entry), 
+                    data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, 
+                    class: "btn--icon txt-dim hover-txt-danger flex-item-no-shrink",
+                    title: "Delete time entry" %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="txt-center padding-block-double">
+          <div class="txt-dim">
+            <%= icon_tag "clock", size: 32, class: "margin-block-end-half" %>
+            <p class="txt-small margin-none">No time logged yet</p>
+            <p class="txt-tiny margin-block-start-half">Start a timer or log time manually</p>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="bg-subtle padding border-radius border-top margin-block-start">
+      <div class="flex align-center gap-half margin-block-end-half">
+        <%= icon_tag "plus", size: 16, class: "txt-dim" %>
+        <h5 class="txt-small txt-bold margin-none">Log Time manually</h5>
+      </div>
+      <%= form_with model: [card, card.time_entries.new], class: "flex flex-column gap" do |form| %>
+        <div class="flex flex-column gap">
+          <div class="flex flex-column gap-half">
+            <%= form.label :started_at, "Started At", class: "label txt-tiny txt-bold txt-dim" %>
+            <%= form.datetime_field :started_at, value: Time.current.strftime("%Y-%m-%dT%H:%M"), class: "input input--small full-width" %>
+          </div>
+
+          <div class="flex flex-column gap-half">
+            <%= form.label :duration_string, "Duration", class: "label txt-tiny txt-bold txt-dim" %>
+            <%= form.text_field :duration_string, placeholder: "Duration (e.g. 1h)", class: "input input--small full-width" %>
+          </div>
+        </div>
+
+        <%= form.submit "Log Time", class: "btn btn--small btn--reversed full-width margin-block-start" %>
+      <% end %>
+    </div>
+  </dialog>
+</div>

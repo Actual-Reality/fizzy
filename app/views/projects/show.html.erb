@@ -1,0 +1,40 @@
+<% @page_title = @project.name %>
+
+<% content_for :header do %>
+  <h1 class="header__title divider divider--fade full-width" data-bridge--title-target="header">
+    <span class="overflow-ellipsis"><%= @project.name %></span>
+  </h1>
+
+  <div class="header__actions header__actions--end hide-on-native">
+    <%= link_to_download_project_csv(@project) %>
+    <%= link_to_edit_project(@project) %>
+  </div>
+<% end %>
+
+<div class="project__summary">
+  <div class="project__summary-metrics">
+    <div class="project__summary-metric">
+      <span class="txt-large font-weight-black"><%= @open_cards_count %></span>
+      <span class="txt-x-small txt-subtle txt-uppercase">Open</span>
+    </div>
+    <div class="project__summary-metric">
+      <span class="txt-large font-weight-black"><%= @closed_cards_count %></span>
+      <span class="txt-x-small txt-subtle txt-uppercase">Closed</span>
+    </div>
+    <div class="project__summary-metric">
+      <span class="txt-large font-weight-black"><%= TimeEntry.format_duration(@total_duration) %></span>
+      <span class="txt-x-small txt-subtle txt-uppercase">Time</span>
+    </div>
+  </div>
+</div>
+
+<%= turbo_frame_tag :cards_container do %>
+  <section class="cards cards--list">
+    <div class="cards__list">
+      <%= with_automatic_pagination "project-cards", @page do %>
+        <%= render "cards/display/previews", cards: @page.records, draggable: false, readonly: true %>
+      <% end %>
+      <div class="blank-slate">No cards in this project</div>
+    </div>
+  </section>
+<% end %>

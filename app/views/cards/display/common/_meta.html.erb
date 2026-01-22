@@ -26,5 +26,12 @@
   <div class="card__meta-avatars card__meta-avatars--assignees">
     <%= yield %>
   </div>
-</div>
 
+  <% total_mins = card.time_entries.sum(:duration) %>
+  <% if total_mins > 0 %>
+    <span class="card__meta-text card__meta-text--time overflow-ellipsis" title="Total time tracked">
+      <%= icon_tag "clock" %>
+      <%= TimeEntry.format_duration(total_mins) %>
+    </span>
+  <% end %>
+</div>

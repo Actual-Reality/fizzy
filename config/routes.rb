@@ -80,6 +80,7 @@ Rails.application.routes.draw do
       resource :image
       resource :not_now
       resource :pin
+      resource :project
       resource :publish
       resource :reading
       resource :triage
@@ -90,6 +91,12 @@ Rails.application.routes.draw do
       resource :self_assignment, only: :create
       resources :steps
       resources :taggings
+      resources :time_entries, only: [:create, :update, :destroy] do
+        collection do
+          post :start
+          post :stop
+        end
+      end
 
       resources :comments do
         resources :reactions, module: :comments
@@ -125,6 +132,12 @@ Rails.application.routes.draw do
       collection do
         resource :settings_refresh, only: :create
       end
+    end
+  end
+
+  resources :projects do
+    member do
+      get :report
     end
   end
 

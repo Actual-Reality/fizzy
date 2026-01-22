@@ -2,7 +2,13 @@
 
 # If running the rails server then create or migrate existing database
 if [ "${1}" == "./bin/thrust" ] && [ "${2}" == "./bin/rails" ] && [ "${3}" == "server" ]; then
-  MIGRATE=1 ./bin/rails db:prepare
+  if [ -z "${SKIP_DB_PREPARE}" ]; then
+    echo "Running database migrations and schema loads..."
+    ./bin/rails db:prepare
+    DISABLE_DATABASE_ENVIRONMENT_CHECK=1 ./bin/rails db:schema:load:cable
+    DISABLE_DATABASE_ENVIRONMENT_CHECK=1 ./bin/rails db:schema:load:cache
+    DISABLE_DATABASE_ENVIRONMENT_CHECK=1 ./bin/rails db:schema:load:queue
+  fi
 fi
 
 exec "${@}"

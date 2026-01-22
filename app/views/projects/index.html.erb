@@ -1,0 +1,56 @@
+<% @page_title = "Projects" %>
+
+<div class="header">
+  <h1 class="header__title">Projects</h1>
+  <div class="header__actions">
+    <%= link_to new_project_path, class: "btn btn--link",
+          data: { controller: "hotkey", action: "keydown.n@document->hotkey#click" } do %>
+      <span>New Project</span>
+      <kbd class="hide-on-touch">N</kbd>
+    <% end %>
+  </div>
+</div>
+
+<% if @projects.any? %>
+  <div class="panel margin-block-start">
+    <table class="projects_table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @projects.each do |project| %>
+          <tr>
+            <td>
+              <%= link_to project.name, project_path(project), class: "txt-undecorated" %>
+            </td>
+            <td>
+              <%= truncate(project.description, length: 100) if project.description.present? %>
+            </td>
+            <td>
+              <div class="flex gap-half">
+                <%= link_to report_project_path(project, format: :csv), class: "btn btn--small", title: "Download Time Report (CSV)" do %>
+                  <%= icon_tag "clipboard" %>
+                  <span class="for-screen-reader">Download CSV</span>
+                <% end %>
+                <%= link_to "Edit", edit_project_path(project), class: "btn btn--small" %>
+                <%= link_to "Delete", project_path(project), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" }, class: "btn btn--small btn--danger" %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <div class="blank-slate center txt-center">
+    <div class="blank-slate__content">
+      <h2 class="txt-large margin-block-end">No projects yet</h2>
+      <p class="txt-medium margin-block-end">Get started by creating your first project.</p>
+      <%= link_to "Create a Project", new_project_path, class: "btn btn--link" %>
+    </div>
+  </div>
+<% end %>

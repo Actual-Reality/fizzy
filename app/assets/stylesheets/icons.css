@@ -107,4 +107,7 @@
   .icon--unseen { --svg: url("unseen.svg"); }
   .icon--world { --svg: url("world.svg"); }
   .icon--youtube { --svg: url("youtube.svg"); }
+  .icon--play { --svg: url("play.svg"); }
+  .icon--stop { --svg: url("stop.svg"); }
+  .icon--clock { --svg: url("clock.svg"); }
 }
