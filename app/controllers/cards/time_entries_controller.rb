@@ -1,5 +1,5 @@
 class Cards::TimeEntriesController < ApplicationController
-  before_action :set_card
+  before_action :set_card, except: :stop_all
 
   def create
     @time_entry = @card.time_entries.new(time_entry_params)
@@ -13,6 +13,12 @@ class Cards::TimeEntriesController < ApplicationController
   end
 
   def start
+    # Ensure user belongs to current account
+    unless Current.user.account == Current.account
+      redirect_to @card, alert: "Invalid account access.", status: :see_other
+      return
+    end
+
     # Stop any other running timers for this user
     Current.user.time_entries.running.find_each(&:stop!)
 
@@ -35,8 +41,21 @@ class Cards::TimeEntriesController < ApplicationController
     end
   end
 
+  def stop_all
+    stopped_count = Current.user.time_entries.running.count
+    Current.user.time_entries.running.find_each(&:stop!)
+
+    redirect_to running_timers_cards_path, notice: "Stopped #{stopped_count} #{'timer'.pluralize(stopped_count)}.", status: :see_other
+  end
+
   def update
     @time_entry = @card.time_entries.find(params[:id])
+
+    # Ensure time entry belongs to current account
+    unless @time_entry.card.account == Current.account
+      redirect_to @card, alert: "Invalid account access.", status: :see_other
+      return
+    end
 
     unless @time_entry.user == Current.user || Current.user.admin?
       redirect_to @card, alert: "You can only edit your own time entries.", status: :see_other
@@ -52,6 +71,12 @@ class Cards::TimeEntriesController < ApplicationController
 
   def destroy
     @time_entry = @card.time_entries.find(params[:id])
+
+    # Ensure time entry belongs to current account
+    unless @time_entry.card.account == Current.account
+      redirect_to @card, alert: "Invalid account access.", status: :see_other
+      return
+    end
 
     if @time_entry.user == Current.user || Current.user.admin?
       @time_entry.destroy

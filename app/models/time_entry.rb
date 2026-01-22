@@ -4,9 +4,12 @@ class TimeEntry < ApplicationRecord
 
   validates :duration, presence: true, numericality: { greater_than: 0 }, unless: :running?
   validates :started_at, presence: true
+  validate :user_and_card_same_account
 
   scope :running, -> { where(ended_at: nil, duration: nil) }
   scope :completed, -> { where.not(duration: nil) }
+  scope :for_account, ->(account) { joins(:card).where(cards: { account_id: account.id }) }
+  scope :running_for_user, ->(user) { running.where(user: user) }
 
   def self.format_duration(minutes)
     return "" unless minutes && minutes > 0
@@ -45,6 +48,14 @@ class TimeEntry < ApplicationRecord
   end
 
   private
+    def user_and_card_same_account
+      return unless user && card
+
+      if user.account_id != card.account_id
+        errors.add(:base, "User and card must belong to the same account")
+      end
+    end
+
     def parse_duration(string)
       return 0 if string.blank?
 
