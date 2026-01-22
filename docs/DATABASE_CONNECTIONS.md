@@ -71,12 +71,54 @@ With default configuration (8 workers, 1 thread each, 5 pool size):
 - Queue: 8 × 5 = 40 connections
 - **Total: ~160 connections** (well within Railway's limits)
 
+### Configuring MySQL max_connections on Railway
+
+**Important:** Railway's MySQL default `max_connections` is typically 151, which is too low for production.
+
+**To fix this, update your Railway MySQL service startup command:**
+
+1. Go to your Railway MySQL service settings
+2. Find the "Start Command" or "Command" field
+3. Add `--max-connections=300` (or higher) to the command
+
+**Recommended MySQL startup command for Railway:**
+```bash
+docker-entrypoint.sh mysqld \
+  --innodb-use-native-aio=0 \
+  --disable-log-bin \
+  --performance_schema=0 \
+  --innodb-buffer-pool-size=1G \
+  --max-connections=300
+```
+
+**Why 300?**
+- Your app needs ~160 connections (with 8 workers)
+- System connections: ~20-30
+- Buffer for spikes: ~50-100
+- **Total: ~250-300 connections recommended**
+
+**If you have fewer workers or want to be conservative:**
+```bash
+--max-connections=200  # Minimum for 8 workers with 5 pool size
+```
+
+**If you have more workers or higher concurrency:**
+```bash
+--max-connections=500  # For 16+ workers or high-traffic apps
+```
+
+**To verify the setting after deployment:**
+```sql
+SHOW VARIABLES LIKE 'max_connections';
+```
+
 If you're using Railway or another cloud provider:
 1. Check your MySQL plan's connection limits
 2. Calculate total connections needed: `(workers × pool_size) × number_of_databases`
-3. Reduce `DB_POOL_SIZE` if needed (minimum: 2-3)
-4. Reduce `WEB_CONCURRENCY` if you have many workers
-5. Upgrade your plan if you need more connections
+3. Set `max_connections` in MySQL startup command (recommended: 300)
+4. Reduce `DB_POOL_SIZE` if needed (minimum: 2-3)
+5. Reduce `WEB_CONCURRENCY` if you have many workers
+6. Upgrade your plan if you need more connections
 
 ## Troubleshooting
 
