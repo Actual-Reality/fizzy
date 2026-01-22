@@ -92,23 +92,25 @@
       <% end %>
     </div>
 
-    <div class="bg-subtle padding border-radius border-top">
-      <div class="flex align-center gap-half margin-block-end">
-        <%= icon_tag "plus", size: 14, class: "txt-dim" %>
-        <h5 class="txt-tiny txt-bold margin-none uppercase translucent">Log Time manually</h5>
+    <div class="bg-subtle padding border-radius border-top margin-block-start">
+      <div class="flex align-center gap-half margin-block-end-half">
+        <%= icon_tag "plus", size: 16, class: "txt-dim" %>
+        <h5 class="txt-small txt-bold margin-none">Log Time manually</h5>
       </div>
       <%= form_with model: [card, card.time_entries.new], class: "flex flex-column gap" do |form| %>
-        <div class="field">
-          <%= form.label :started_at, "Started At", class: "label txt-tiny txt-bold" %>
-          <%= form.datetime_field :started_at, value: Time.current.strftime("%Y-%m-%dT%H:%M"), class: "input input--small full-width" %>
+        <div class="flex flex-column gap">
+          <div class="flex flex-column gap-half">
+            <%= form.label :started_at, "Started At", class: "label txt-tiny txt-bold txt-dim" %>
+            <%= form.datetime_field :started_at, value: Time.current.strftime("%Y-%m-%dT%H:%M"), class: "input input--small full-width" %>
+          </div>
+
+          <div class="flex flex-column gap-half">
+            <%= form.label :duration_string, "Duration", class: "label txt-tiny txt-bold txt-dim" %>
+            <%= form.text_field :duration_string, placeholder: "Duration (e.g. 1h)", class: "input input--small full-width" %>
+          </div>
         </div>
 
-        <div class="field">
-          <%= form.label :duration_string, "Duration", class: "label txt-tiny txt-bold" %>
-          <%= form.text_field :duration_string, placeholder: "Duration (e.g. 1h)", class: "input input--small full-width" %>
-        </div>
-
-        <%= form.submit "Log Time", class: "btn btn--small btn--reversed full-width margin-block-start-half" %>
+        <%= form.submit "Log Time", class: "btn btn--small btn--reversed full-width margin-block-start" %>
       <% end %>
     </div>
   </dialog>

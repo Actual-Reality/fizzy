@@ -1,9 +1,42 @@
-<% @page_title = "Edit Project" %>
+<% @page_title = "Project Settings" %>
 
-<div class="header">
-  <h1 class="header__title">Edit Project</h1>
-</div>
+<% content_for :header do %>
+  <div class="header__actions header__actions--start">
+    <%= back_link_to @project.name, @project, "keydown.left@document->hotkey#click keydown.esc@document->hotkey#click click->turbo-navigation#backIfSamePath" %>
+  </div>
 
-<div class="panel">
-  <%= render "form", project: @project %>
-</div>
+  <h1 class="header__title" data-bridge--title-target="header">
+    <div><%= @page_title %></div>
+  </h1>
+<% end %>
+
+<section class="settings">
+  <div class="settings__panel settings__panel--users panel shadow center">
+    <%= form_with model: @project, class: "display-contents", data: {
+          controller: "form",
+          action: "submit->form#preventEmptySubmit" } do |form| %>
+      <% if @project.errors.any? %>
+        <div class="message message--error">
+          <h2><%= pluralize(@project.errors.count, "error") %> prohibited this project from being saved:</h2>
+          <ul>
+            <% @project.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="flex flex-column gap-half">
+        <%= form.text_field :name, required: true, class: "input full-width", autofocus: true, autocomplete: "off", placeholder: "Name it…", data: { form_target: "input", action: "keydown.esc@document->form#cancel", validation_message: "Project names can't be blank" } %>
+
+        <%= form.text_area :description, class: "input full-width", rows: 5, placeholder: "Describe this project…", data: { action: "keydown.esc@document->form#cancel" } %>
+      </div>
+
+      <button type="submit" class="btn btn--link center txt-normal margin-block-start">
+        <span>Save changes</span>
+      </button>
+
+      <%= link_to "Cancel and go back", @project, data: { form_target: "cancel", turbo_frame: "_top" }, hidden: true %>
+    <% end %>
+  </div>
+</section>

@@ -1,46 +1,40 @@
 <% @page_title = @project.name %>
 
-<div class="header">
-  <div class="header__title">
-    <h1><%= @project.name %></h1>
+<% content_for :header do %>
+  <h1 class="header__title divider divider--fade full-width" data-bridge--title-target="header">
+    <span class="overflow-ellipsis"><%= @project.name %></span>
+  </h1>
+
+  <div class="header__actions header__actions--end hide-on-native">
+    <%= link_to_download_project_csv(@project) %>
+    <%= link_to_edit_project(@project) %>
   </div>
+<% end %>
 
-  <div class="header__actions">
-    <%= link_to "Time Report", report_project_path(@project), class: "btn", data: { controller: "hotkey tooltip", action: "keydown.r@document->hotkey#click", turbo_frame: "_top" }, title: "Time Report (r)" %>
-    <%= link_to "Edit Project", edit_project_path(@project), class: "btn", data: { controller: "hotkey tooltip", action: "keydown.e@document->hotkey#click", turbo_frame: "_top" }, title: "Edit Project (e)" %>
-  </div>
-</div>
-
-<div class="panel panel--wide center margin-block-end">
-  <% if @project.description.present? %>
-    <div class="prose margin-block-end">
-      <%= simple_format @project.description %>
+<div class="project__summary">
+  <div class="project__summary-metrics">
+    <div class="project__summary-metric">
+      <span class="txt-large font-weight-black"><%= @open_cards_count %></span>
+      <span class="txt-x-small txt-subtle txt-uppercase">Open</span>
     </div>
-    <hr class="border-top margin-block">
-  <% end %>
-
-  <div class="flex gap-double justify-center txt-align-center">
-    <div>
-      <div class="txt-x-large font-weight-black"><%= @open_cards_count %></div>
-      <div class="txt-small txt-subtle txt-uppercase">Open Cards</div>
+    <div class="project__summary-metric">
+      <span class="txt-large font-weight-black"><%= @closed_cards_count %></span>
+      <span class="txt-x-small txt-subtle txt-uppercase">Closed</span>
     </div>
-    <div>
-      <div class="txt-x-large font-weight-black"><%= @closed_cards_count %></div>
-      <div class="txt-small txt-subtle txt-uppercase">Closed Cards</div>
-    </div>
-    <div>
-      <div class="txt-x-large font-weight-black"><%= TimeEntry.format_duration(@total_duration) %></div>
-      <div class="txt-small txt-subtle txt-uppercase">Total Time</div>
+    <div class="project__summary-metric">
+      <span class="txt-large font-weight-black"><%= TimeEntry.format_duration(@total_duration) %></span>
+      <span class="txt-x-small txt-subtle txt-uppercase">Time</span>
     </div>
   </div>
 </div>
 
 <%= turbo_frame_tag :cards_container do %>
-  <div class="card-columns hide-scrollbar">
-    <div class="cards__list full-width">
-       <%= with_automatic_pagination "project-cards", @page do %>
-         <%= render "cards/display/previews", cards: @page.records, draggable: false %>
-       <% end %>
+  <section class="cards cards--list">
+    <div class="cards__list">
+      <%= with_automatic_pagination "project-cards", @page do %>
+        <%= render "cards/display/previews", cards: @page.records, draggable: false, readonly: true %>
+      <% end %>
+      <div class="blank-slate">No cards in this project</div>
     </div>
-  </div>
+  </section>
 <% end %>

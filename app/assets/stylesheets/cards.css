@@ -452,6 +452,22 @@
     z-index: -1;
   }
 
+  .card--readonly {
+    cursor: pointer;
+  }
+
+  .card--readonly .card__link {
+    z-index: 1;
+  }
+
+  .card--readonly * {
+    pointer-events: none;
+  }
+
+  .card--readonly .card__link {
+    pointer-events: auto;
+  }
+
   .card:nth-child(2n+1) .bubble { --bubble-rotate: -90deg; }
   .card:nth-child(3n+1) .bubble { --bubble-rotate: 45deg; }
 
