@@ -59,7 +59,7 @@
         <% card.time_entries.completed.includes(:user).order(started_at: :desc).each do |entry| %>
           <div class="time-entry flex align-center justify-between txt-small padding-block-half border-bottom border-color-light">
             <div class="flex flex-column">
-              <span class="txt-dim txt-tiny"><%= local_datetime_tag(entry.started_at, style: :date) %></span>
+              <span class="txt-dim txt-tiny"><%= local_datetime_tag(entry.started_at, style: :datetime) %></span>
             </div>
             <div class="flex align-center gap-half">
               <span class="tabular-nums txt-bold"><%= entry.duration_string %></span>
