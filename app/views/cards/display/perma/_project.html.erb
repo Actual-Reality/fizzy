@@ -1,16 +1,12 @@
-<div class="card__project flex align-center gap-half">
-  <span class="txt-small txt-dim"><%= card.project&.name || "No Project" %></span>
-
-  <div class="align-self-center position-relative txt-small"
-      data-controller="dialog"
-      data-action="keydown.esc->dialog#close:stop click@document->dialog#closeOnClickOutside mouseenter->dialog#loadLazyFrames" <%= "hidden" if card.closed? %>>
-    <button class="project-picker__button btn btn--plain card__hide-on-index" data-action="click->dialog#open:stop" aria-label="Choose a project for this card">
-      <%= icon_tag "caret-down", class: "txt-xx-small" %>
-      <span class="for-screen-reader">Choose a project for this card</span>
-    </button>
-
-    <dialog class="popup panel flex-column align-start gap-half fill-white shadow margin-block-double" data-dialog-target="dialog" data-action="turbo:before-morph-attribute->dialog#preventCloseOnMorphing turbo:submit-end->dialog#close">
-      <%= turbo_frame_tag "project_picker", src: edit_card_project_path(card), target: "_top", loading: :lazy, refresh: "morph" %>
-    </dialog>
-  </div>
+<div class="card__project flex align-center gap-half" <%= "hidden" if card.closed? %>>
+  <% if Current.account.projects.any? %>
+    <%= form_with model: card, url: card_project_path(card), method: :patch, class: "card__project-form", data: { controller: "form", action: "change->form#submit" } do |form| %>
+      <%= form.collection_select :project_id, Current.account.projects.order(:name), :id, :name, 
+            { include_blank: "No Project", selected: card.project_id }, 
+            { class: "card__project-select input input--select txt-small txt-dim", 
+              "aria-label": "Choose a project for this card" } %>
+    <% end %>
+  <% else %>
+    <span class="txt-small txt-dim">No Project</span>
+  <% end %>
 </div>
