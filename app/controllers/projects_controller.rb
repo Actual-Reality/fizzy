@@ -12,7 +12,7 @@ class ProjectsController < ApplicationController
     @open_cards_count = @project.cards.open.count
     @closed_cards_count = @project.cards.closed.count
     @total_duration = @project.time_entries.sum(:duration)
-    set_page_and_extract_portion_from @project.cards.latest.preloaded
+    set_page_and_extract_portion_from Current.user.accessible_cards.where(project: @project).latest.preloaded
   end
 
   def new
